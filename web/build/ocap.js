@@ -131,17 +131,26 @@ function createSoldier(event) {
 function createVehicle(event) {
   const [,, kind, description] = event;
 
-  return Object.assign(createBaseEntity(event), {
+  const vehicle = Object.assign(createBaseEntity(event), {
     kind,
     description,
     crew: [],
-    get side() {
-      return this.crew.length ? this.crew[0].side : 'empty';
-    },
 
     addCrewMember,
     removeCrewMember,
   });
+
+  Object.defineProperties(vehicle, {
+    side: {
+      get() {
+        return this.crew.length ? this.crew[0].side : 'empty';
+      },
+      configurable: true,
+      enumerable: true,
+    },
+  });
+
+  return vehicle;
 
   function addCrewMember(unit) {
     if (!this.crew.includes(unit)) {
@@ -190,8 +199,11 @@ function applyMoveEvent(state, event) {
 }
 
 function applySpawnedEvent(state, event) {
+  const oldMarker = state.entities[event[1]] && state.entities[event[1]].marker;
+
   const entity = createEntity(event);
-  state.entities[entity.id] = state.entities[entity.id] || entity;
+  state.entities[entity.id] = entity;
+  entity.marker = oldMarker;
 }
 
 function applyRespawnedEvent(state, event) {
@@ -222,8 +234,8 @@ function applyFiredEvent(state, event) {
 }
 
 function applyKilledEvent(state, event) {
-  const entityId = event[2];
-  state.entities[entityId].alive = false;
+  const victimId = event[1];
+  state.entities[victimId].alive = false;
   addBattleEvent(state, event);
   addEvent(state, event);
 }
@@ -325,7 +337,6 @@ function createPlayer(frames, state, map) {
     frame.forEach(event => applyEvent(state, event));
   }
 
-  
 }
 
 /*
@@ -491,6 +502,11 @@ function createMapController() {
     marker.setRotationAngle(entity.pose.dir);
 
     marker.setClasses({
+      west: false,
+      east: false,
+      ind: false,
+      civ: false,
+      empty: false,
       [entity.side]: true,
       alive: entity.alive,
       dead: !entity.alive,
@@ -518,8 +534,8 @@ function createMapController() {
 
   function renderEvent(event, state) {
     if (event[0] === 'H') {
-      const shooter = state.entities[event[1]];
-      const target = state.entities[event[2]];
+      const target = state.entities[event[1]];
+      const shooter = state.entities[event[2]];
 
       const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
         color: '#f862ff',
@@ -534,8 +550,8 @@ function createMapController() {
       line.addTo(map);
       lines.push(line);
     } else if (event[0] === 'K') {
-      const shooter = state.entities[event[1]];
-      const target = state.entities[event[2]];
+      const target = state.entities[event[1]];
+      const shooter = state.entities[event[2]];
 
       const line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng(target.pose)], {
         color: '#ff0000',
