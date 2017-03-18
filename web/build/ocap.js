@@ -28,11 +28,7 @@ function processHeaderData(data) {
 
 function processEntry(entry) {
   const number = Number.parseFloat(entry);
-  return Number.isNaN(number) ?
-      (entry === 'true' ? true :
-          entry === 'false' ? false :
-              entry) :
-      number;
+  return Number.isNaN(number) ? (entry === 'true' ? true : entry === 'false' ? false : entry) : number;
 }
 
 const MAP_INDEX_URL = 'images/maps/maps.json';
@@ -84,6 +80,198 @@ function createEmitter(object) {
     (handlers[eventName] || []).forEach(eventHandler => eventHandler(...args));
   }
 }
+
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal$1 = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+
+var _freeGlobal = freeGlobal$1;
+
+var freeGlobal = _freeGlobal;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root$1 = freeGlobal || freeSelf || Function('return this')();
+
+var _root = root$1;
+
+var root = _root;
+
+/** Built-in value references. */
+var Symbol$1 = root.Symbol;
+
+var _Symbol = Symbol$1;
+
+var Symbol$2 = _Symbol;
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/** Built-in value references. */
+var symToStringTag$1 = Symbol$2 ? Symbol$2.toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
+ */
+function getRawTag$1(value) {
+  var isOwn = hasOwnProperty.call(value, symToStringTag$1),
+      tag = value[symToStringTag$1];
+
+  try {
+    value[symToStringTag$1] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag$1] = tag;
+    } else {
+      delete value[symToStringTag$1];
+    }
+  }
+  return result;
+}
+
+var _getRawTag = getRawTag$1;
+
+/** Used for built-in method references. */
+var objectProto$1 = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString$1 = objectProto$1.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString$1(value) {
+  return nativeObjectToString$1.call(value);
+}
+
+var _objectToString = objectToString$1;
+
+var Symbol = _Symbol;
+var getRawTag = _getRawTag;
+var objectToString = _objectToString;
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]';
+var undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag$1(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag && symToStringTag in Object(value))
+    ? getRawTag(value)
+    : objectToString(value);
+}
+
+var _baseGetTag = baseGetTag$1;
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike$1(value) {
+  return value != null && typeof value == 'object';
+}
+
+var isObjectLike_1 = isObjectLike$1;
+
+var baseGetTag = _baseGetTag;
+var isObjectLike = isObjectLike_1;
+
+/** `Object#toString` result references. */
+var numberTag = '[object Number]';
+
+/**
+ * Checks if `value` is classified as a `Number` primitive or object.
+ *
+ * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
+ * classified as numbers, use the `_.isFinite` method.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a number, else `false`.
+ * @example
+ *
+ * _.isNumber(3);
+ * // => true
+ *
+ * _.isNumber(Number.MIN_VALUE);
+ * // => true
+ *
+ * _.isNumber(Infinity);
+ * // => true
+ *
+ * _.isNumber('3');
+ * // => false
+ */
+function isNumber(value) {
+  return typeof value == 'number' ||
+    (isObjectLike(value) && baseGetTag(value) == numberTag);
+}
+
+var isNumber_1 = isNumber;
 
 function createEntity(event) {
   switch (event[2]) {
@@ -189,9 +377,9 @@ function applyMoveEvent(state, event) {
   const [, entityId, x, y, dir] = event;
   const entityPose = state.entities[entityId].pose;
   const newPose = {
-    x: x !== '' ? x : entityPose.x,
-    y: y !== '' ? y : entityPose.y,
-    dir: dir !== '' ? dir : entityPose.dir,
+    x: isNumber_1(x) ? x : entityPose.x,
+    y: isNumber_1(y) ? y : entityPose.y,
+    dir: isNumber_1(dir) ? dir : entityPose.dir,
   };
   Object.assign(entityPose, newPose);
 
@@ -218,32 +406,36 @@ function applyDespawnedEvent(state, event) {
 }
 
 function applyConnectedEvent(state, event) {
-  addEvent(state, event);
+  addLoggedEvent(state, event);
 }
 
 function applyDisconnectedEvent(state, event) {
-  addEvent(state, event);
+  addLoggedEvent(state, event);
 }
 
 function applyHitEvent(state, event) {
-  addBattleEvent(state, event);
+  if (isNumber_1(event[1]) && isNumber_1(event[2])) {
+    addBattleEvent(state, event);
+    addLoggedEvent(state, event);
+  }
 }
 
 function applyFiredEvent(state, event) {
-  addBattleEvent(state, event);
+  if (isNumber_1(event[1]) && isNumber_1(event[2]) && isNumber_1(event[3])) {
+    addBattleEvent(state, event);
+  }
 }
 
 function applyKilledEvent(state, event) {
   const victimId = event[1];
   state.entities[victimId].alive = false;
   addBattleEvent(state, event);
-  addEvent(state, event);
+  addLoggedEvent(state, event);
 }
 
 function applyGotInEvent(state, [,unitId, vehicleId]) {
   const unit = state.entities[unitId];
   const vehicle = state.entities[vehicleId];
-
   vehicle.addCrewMember(unit);
 }
 
@@ -252,15 +444,15 @@ function applyGotOutEvent(state, [,entityId]) {
   unit.vehicle.removeCrewMember(unit);
 }
 
-function addEvent(state, event) {
-  //state.events.push(event);
+function addLoggedEvent(state, event) {
+  //state.loggedEvents.push(event);
 }
 
 function addBattleEvent(state, event) {
   state.events.push(event);
 }
 
-function createPlayer(frames, state, map) {
+function createPlayer(frames, state, map, unitList) {
   let intervalHandle = null;
   let currentFrameIndex = -1;
 
@@ -290,6 +482,7 @@ function createPlayer(frames, state, map) {
 
     player.emit('nextFrame', player.currentFrame, player.currentFrameIndex, player.totalFrameCount);
     map.update(state);
+    unitList.update(state);
 
     if (!playing) {
       player.pause();
@@ -313,12 +506,14 @@ function createPlayer(frames, state, map) {
     currentFrameIndex = -1;
     while (currentFrameIndex !== frameIndex) applyNextFrame();
     map.update(state);
+    unitList.update(state);
   }
 
   function reset() {
     currentFrameIndex = -1;
     applyNextFrame();
     map.update(state);
+    unitList.update(state);
   }
 
   function applyNextFrame() {
@@ -478,7 +673,7 @@ function createMapController() {
 
     map.setView(map.unproject([imageSize / 2, imageSize / 2]), MAP_MIN_ZOOM);
 
-    mapElement.addEventListener("wheel", event => {
+    mapElement.addEventListener('wheel', event => {
       const zoom = event.deltaY > 0 ? -0.5 : 0.5;
       map.zoomIn(zoom, {animate: false});
     });
@@ -494,7 +689,6 @@ function createMapController() {
     state.events.forEach(event => renderEvent(event, state));
   }
 
-
   function renderEntity(entity) {
     const marker = entity.marker = (entity.marker || createMarker(entity));
 
@@ -502,11 +696,6 @@ function createMapController() {
     marker.setRotationAngle(entity.pose.dir);
 
     marker.setClasses({
-      west: false,
-      east: false,
-      ind: false,
-      civ: false,
-      empty: false,
       [entity.side]: true,
       alive: entity.alive,
       dead: !entity.alive,
@@ -514,6 +703,17 @@ function createMapController() {
       killed: false,
       isInVehicle: entity.vehicle,
     });
+
+    if (entity.vehicle) {
+      marker.closePopup();
+    } else {
+      marker.openPopup();
+    }
+
+    if (entity.crew) {
+      marker.getPopup().setContent(entity.description + ' (' + entity.crew.length + ')<br>' +
+          entity.crew.map(unit => unit.name).join('<br>'));
+    }
   }
 
   function createMarker(entity) {
@@ -525,11 +725,24 @@ function createMapController() {
       classList: ['marker']
     }));
 
+    marker.bindPopup(createPopup(entity)).openPopup();
+
     marker.entity = entity;
 
     markers[entity.id] = marker;
 
     return marker;
+  }
+
+  function createPopup(entity) {
+    let popup = L.popup({
+      autoPan: false,
+      autoClose: false,
+      closeButton: false,
+      className: entity.kind === 'Man' ? 'leaflet-popup-unit' : 'leaflet-popup-vehicle',
+    });
+    popup.setContent(entity.name);
+    return popup;
   }
 
   function renderEvent(event, state) {
@@ -544,6 +757,7 @@ function createMapController() {
       });
 
       target.marker.setClasses({
+        [target.side]: true,
         hit: true,
       });
 
@@ -560,6 +774,7 @@ function createMapController() {
       });
 
       target.marker.setClasses({
+        [target.side]: true,
         killed: true,
         hit: false,
       });
@@ -579,63 +794,13 @@ function createMapController() {
     }
   }
 
-
   function coordinatesToLatLng({x, y}) {
     return map.unproject({
       x: (x * mapMultiplier) + trim,
       y: (mapImageSize - y * mapMultiplier) + trim,
     }, MAP_MAX_NATIVE_ZOOM);
   }
-
 }
-/*
-// Manage entity at given frame
-manageFrame(f) {
-  f = this.getRelativeFrameIndex(f);
-
-  if (this.isFrameOutOfBounds(f)) { // Entity does not exist on frame
-    this.marker.hide();
-  } else { // Entity does exist on frame
-    this._updateAtFrame(f);
-  };
-};
-
-// Get LatLng at specific frame
-getLatLngAtFrame(f) {
-  var pos = this.getPosAtFrame(f);
-  if (pos != null) {return armaToLatLng(pos)};
-  return;
-};
-
-// Get LatLng at current frame
-getLatLng() {
-  return this.getLatLngAtFrame(playbackFrame);
-};
-
-_createPopup(content) {
-  let popup = L.popup({
-    autoPan: false,
-    autoClose: false,
-    closeButton: false,
-    className: this._popupClassName
-  });
-  popup.setContent(content);
-  return popup;
-};
-
-hideMarkerPopup(bool) {
-  let popup = this.marker.getPopup();
-  if (popup != null) {
-    let element = popup.element;
-    let display = "inherit";
-    if (bool) {
-      display = "none"
-    }
-
-    element.style.display = display;
-  }
-}
-*/
 
 var hookCallback;
 
@@ -668,7 +833,7 @@ function isObjectEmpty(obj) {
     return true;
 }
 
-function isNumber(input) {
+function isNumber$2(input) {
     return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
 }
 
@@ -802,6 +967,8 @@ function isUndefined(input) {
     return input === void 0;
 }
 
+// Plugins that add properties should also add the key here (null value),
+// so we can properly clone ourselves.
 var momentProperties = hooks.momentProperties = [];
 
 function copyConfig(to, from) {
@@ -893,6 +1060,7 @@ function toInt(argumentForCoercion) {
     return value;
 }
 
+// compare two arrays, return the number of differences
 function compareArrays(array1, array2, dontConvert) {
     var len = Math.min(array1.length, array2.length),
         lengthDiff = Math.abs(array1.length - array2.length),
@@ -1358,7 +1526,7 @@ function addParseToken (token, callback) {
     if (typeof token === 'string') {
         token = [token];
     }
-    if (isNumber(callback)) {
+    if (isNumber$2(callback)) {
         func = function (input, array) {
             array[callback] = toInt(input);
         };
@@ -1575,7 +1743,7 @@ function setMonth (mom, value) {
         } else {
             value = mom.localeData().monthsParse(value);
             // TODO: Another silent failure?
-            if (!isNumber(value)) {
+            if (!isNumber$2(value)) {
                 return mom;
             }
         }
@@ -1674,6 +1842,8 @@ function computeMonthsParse () {
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
 }
 
+// FORMATTING
+
 addFormatToken('Y', 0, 0, function () {
     var y = this.year();
     return y <= 9999 ? '' + y : '+' + y;
@@ -1760,6 +1930,7 @@ function createUTCDate (y) {
     return date;
 }
 
+// start-of-first-week - start-of-year
 function firstWeekOffset(year, dow, doy) {
     var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
         fwd = 7 + dow - doy,
@@ -1821,6 +1992,8 @@ function weeksInYear(year, dow, doy) {
     return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
 }
 
+// FORMATTING
+
 addFormatToken('w', ['ww', 2], 'wo', 'week');
 addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
 
@@ -1877,6 +2050,8 @@ function getSetISOWeek (input) {
     var week = weekOfYear(this, 1, 4).week;
     return input == null ? week : this.add((input - week) * 7, 'd');
 }
+
+// FORMATTING
 
 addFormatToken('d', 0, 'do', 'day');
 
@@ -2228,6 +2403,8 @@ function computeWeekdaysParse () {
     this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
 }
 
+// FORMATTING
+
 function hFormat() {
     return this.hours() % 12 || 12;
 }
@@ -2354,6 +2531,10 @@ function localeMeridiem (hours, minutes, isLower) {
 // this rule.
 var getSetHour = makeGetSet('Hours', true);
 
+// months
+// week
+// weekdays
+// meridiem
 var baseConfig = {
     calendar: defaultCalendar,
     longDateFormat: defaultLongDateFormat,
@@ -2374,6 +2555,7 @@ var baseConfig = {
     meridiemParse: defaultLocaleMeridiemParse
 };
 
+// internal storage for locale config files
 var locales = {};
 var localeFamilies = {};
 var globalLocale;
@@ -2579,6 +2761,8 @@ function checkOverflow (m) {
     return m;
 }
 
+// iso 8601 regex
+// 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
 var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
 var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
 
@@ -2836,6 +3020,7 @@ function dayOfYearFromWeekInfo(config) {
     }
 }
 
+// constant that refers to the ISO standard
 hooks.ISO_8601 = function () {};
 
 // date from string and format string
@@ -2933,6 +3118,7 @@ function meridiemFixWrap (locale, hour, meridiem) {
     }
 }
 
+// date from string and array of format strings
 function configFromStringAndArray(config) {
     var tempConfig,
         bestMoment,
@@ -3049,7 +3235,7 @@ function configFromInput(config) {
         configFromArray(config);
     } else if (typeof(input) === 'object') {
         configFromObject(config);
-    } else if (isNumber(input)) {
+    } else if (isNumber$2(input)) {
         // from milliseconds
         config._d = new Date(input);
     } else {
@@ -3194,6 +3380,8 @@ function absRound (number) {
         return Math.round(number);
     }
 }
+
+// FORMATTING
 
 function offset (token, separator) {
     addFormatToken(token, 0, 0, function () {
@@ -3413,6 +3601,7 @@ function isUtc () {
     return this.isValid() ? this._isUTC && this._offset === 0 : false;
 }
 
+// ASP.NET json date format regex
 var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
 // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
@@ -3434,7 +3623,7 @@ function createDuration (input, key) {
             d  : input._days,
             M  : input._months
         };
-    } else if (isNumber(input)) {
+    } else if (isNumber$2(input)) {
         duration = {};
         if (key) {
             duration[key] = input;
@@ -3524,6 +3713,7 @@ function momentsDifference(base, other) {
     return res;
 }
 
+// TODO: remove 'name' arg after deprecation is removed
 function createAdder(direction, name) {
     return function (val, period) {
         var dur, tmp;
@@ -3791,6 +3981,9 @@ function toNow (withoutSuffix) {
     return this.to(createLocal(), withoutSuffix);
 }
 
+// If passed a locale key, it will set the locale for this
+// instance.  Otherwise, it will return the locale configuration
+// variables for this instance.
 function locale (key) {
     var newLocaleData;
 
@@ -3935,6 +4128,8 @@ function creationData() {
     };
 }
 
+// FORMATTING
+
 addFormatToken(0, ['gg', 2], 0, function () {
     return this.weekYear() % 100;
 });
@@ -4030,6 +4225,8 @@ function setWeekAll(weekYear, week, weekday, dow, doy) {
     return this;
 }
 
+// FORMATTING
+
 addFormatToken('Q', 0, 'Qo', 'quarter');
 
 // ALIASES
@@ -4052,6 +4249,8 @@ addParseToken('Q', function (input, array) {
 function getSetQuarter (input) {
     return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
 }
+
+// FORMATTING
 
 addFormatToken('D', ['DD', 2], 'Do', 'date');
 
@@ -4079,6 +4278,8 @@ addParseToken('Do', function (input, array) {
 
 var getSetDayOfMonth = makeGetSet('Date', true);
 
+// FORMATTING
+
 addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
 
 // ALIASES
@@ -4105,6 +4306,8 @@ function getSetDayOfYear (input) {
     return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
 }
 
+// FORMATTING
+
 addFormatToken('m', ['mm', 2], 0, 'minute');
 
 // ALIASES
@@ -4125,6 +4328,8 @@ addParseToken(['m', 'mm'], MINUTE);
 
 var getSetMinute = makeGetSet('Minutes', false);
 
+// FORMATTING
+
 addFormatToken('s', ['ss', 2], 0, 'second');
 
 // ALIASES
@@ -4144,6 +4349,8 @@ addParseToken(['s', 'ss'], SECOND);
 // MOMENTS
 
 var getSetSecond = makeGetSet('Seconds', false);
+
+// FORMATTING
 
 addFormatToken('S', 0, 0, function () {
     return ~~(this.millisecond() / 100);
@@ -4203,6 +4410,8 @@ for (token = 'S'; token.length <= 9; token += 'S') {
 // MOMENTS
 
 var getSetMillisecond = makeGetSet('Milliseconds', false);
+
+// FORMATTING
 
 addFormatToken('z',  0, 0, 'zoneAbbr');
 addFormatToken('zz', 0, 0, 'zoneName');
@@ -4378,7 +4587,7 @@ function get$1 (format, index, field, setter) {
 }
 
 function listMonthsImpl (format, index, field) {
-    if (isNumber(format)) {
+    if (isNumber$2(format)) {
         index = format;
         format = undefined;
     }
@@ -4407,7 +4616,7 @@ function listMonthsImpl (format, index, field) {
 // (true, fmt)
 function listWeekdaysImpl (localeSorted, format, index, field) {
     if (typeof localeSorted === 'boolean') {
-        if (isNumber(format)) {
+        if (isNumber$2(format)) {
             index = format;
             format = undefined;
         }
@@ -4418,7 +4627,7 @@ function listWeekdaysImpl (localeSorted, format, index, field) {
         index = format;
         localeSorted = false;
 
-        if (isNumber(format)) {
+        if (isNumber$2(format)) {
             index = format;
             format = undefined;
         }
@@ -4822,6 +5031,8 @@ proto$2.lang = lang;
 
 // Side effect imports
 
+// FORMATTING
+
 addFormatToken('X', 0, 0, 'unix');
 addFormatToken('x', 0, 0, 'valueOf');
 
@@ -4913,7 +5124,6 @@ function createPlaybackWidget(element, playbackControl) {
   }
 
   function handleKeyboardInput(event) {
-    console.log(event);
     switch (event.charCode) {
       case 32: return togglePlayback();
     }
@@ -4932,6 +5142,90 @@ function createPlaybackWidget(element, playbackControl) {
     } else {
       playbackControl.pause();
     }
+  }
+}
+
+function createUnitList(element, map) {
+  let list = {};
+
+  return {
+    update,
+    reset,
+  };
+
+  function update(state) {
+    const change = state.entities.reduce((change, entity) => processEntity(entity) || change, false);
+    if (change) {
+      createList();
+    }
+  }
+
+  function reset() {
+    list = {};
+  }
+
+  function processEntity(entity) {
+    let changed = false;
+    if (entity.kind === 'Man') {
+      if (!list[entity.side]) {
+        list[entity.side] = {};
+        changed = true;
+      }
+      const side = list[entity.side];
+      if (!side[entity.group]) {
+        side[entity.group] = {};
+        changed = true;
+      }
+      const group = side[entity.group];
+      if (!group[entity.id]) {
+        group[entity.id] = entity;
+        changed = true;
+      }
+    }
+    return changed;
+  }
+
+  function createList() {
+    element.innerHTML = '';
+    Object.keys(list).forEach(sideName => element.appendChild(createSideElement(sideName, list[sideName])));
+  }
+
+  function createSideElement(sideName, side) {
+    const sideElement = document.createElement('li');
+
+    const titleElement = document.createElement('span');
+    titleElement.classList.add('sideTitle', sideName);
+    titleElement.innerText = sideName.toUpperCase();
+    sideElement.appendChild(titleElement);
+
+    const listElement = document.createElement('ul');
+    Object.keys(side).forEach(groupName => listElement.appendChild(createGroupElement(groupName, side[groupName])));
+    sideElement.appendChild(listElement);
+
+    return sideElement;
+  }
+
+  function createGroupElement(groupName, group) {
+    const groupElement = document.createElement('li');
+
+    const titleElement = document.createElement('span');
+    titleElement.classList.add('groupTitle', 'liGroup');
+    titleElement.innerText = groupName;
+    groupElement.appendChild(titleElement);
+
+    const listElement = document.createElement('ul');
+    Object.values(group).forEach(unit => listElement.appendChild(createUnitElement(unit)));
+    groupElement.appendChild(listElement);
+
+    return groupElement;
+  }
+
+  function createUnitElement(unit) {
+    const unitElement = document.createElement('li');
+    unitElement.classList.add('unitName', 'liUnit');
+    unitElement.innerText = unit.name;
+
+    return unitElement;
   }
 }
 
@@ -4958,7 +5252,8 @@ function loadCaptureFile(captureFilePath, mapIndex) {
     };
 
     const map = createMapController();
-    const player = createPlayer(frames, state, map);
+    const unitList = createUnitList(document.querySelector('#unitList'), map);
+    const player = createPlayer(frames, state, map, unitList);
     const playback = createPlaybackWidget(document.querySelector('#playbackWidget'), player);
 
     const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === header.worldName.toLowerCase());
