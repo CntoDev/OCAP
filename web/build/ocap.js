@@ -27,7 +27,6 @@ object-assign
 @license MIT
 */
 
-/* eslint-disable no-unused-vars */
 var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
@@ -121,13 +120,6 @@ var index = shouldUseNative() ? Object.assign : function (target, source) {
  *
  * 
  */
-/**
- * WARNING: DO NOT manually require this module.
- * This is a replacement for `invariant(...)` used by the error code system
- * and will _only_ be required by the corresponding babel pass.
- * It always throws.
- */
-
 function reactProdInvariant(code) {
   var argCount = arguments.length - 1;
 
@@ -158,17 +150,6 @@ var reactProdInvariant_1 = reactProdInvariant;
  *
  */
 
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
 var validateFormat = function validateFormat(format) {};
 
 function invariant$1(condition, format, a, b, c, d, e, f) {
@@ -196,13 +177,6 @@ var invariant_1 = invariant$1;
 
 var _prodInvariant = reactProdInvariant_1;
 
-/**
- * Static poolers. Several custom versions for each potential number of
- * arguments. A completely generic pooler is easy to implement, but would
- * require accessing the `arguments` object. In each of these, `this` refers to
- * the Class itself, not an instance. If any others are needed, simply add them
- * here, or in their own files.
- */
 var oneArgumentPooler = function (copyFieldsFrom) {
   var Klass = this;
   if (Klass.instancePool.length) {
@@ -302,12 +276,6 @@ var PooledClass_1 = PooledClass$1;
  * 
  */
 
-/**
- * Keeps track of the current owner.
- *
- * The current owner is the component who should own any components that are
- * currently being constructed.
- */
 var ReactCurrentOwner$1 = {
 
   /**
@@ -319,17 +287,6 @@ var ReactCurrentOwner$1 = {
 };
 
 var ReactCurrentOwner_1 = ReactCurrentOwner$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
 
 function makeEmptyFunction(arg) {
   return function () {
@@ -379,9 +336,6 @@ var emptyFunction_1 = emptyFunction$2;
  * 
  */
 
-// The Symbol used to tag the ReactElement type. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-
 var REACT_ELEMENT_TYPE$1 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
 
 var ReactElementSymbol = REACT_ELEMENT_TYPE$1;
@@ -409,26 +363,6 @@ function hasValidKey(config) {
   return config.key !== undefined;
 }
 
-/**
- * Factory method to create a new React element. This no longer adheres to
- * the class pattern, so do not use new to call it. Also, no instanceof check
- * will work. Instead test $$typeof field against Symbol.for('react.element') to check
- * if something is a React Element.
- *
- * @param {*} type
- * @param {*} key
- * @param {string|object} ref
- * @param {*} self A *temporary* helper to detect places where `this` is
- * different from the `owner` when React.createElement is called, so that we
- * can warn. We want to get rid of owner and replace string `ref`s with arrow
- * functions, and as long as `this` and owner are the same, there will be no
- * change in behavior.
- * @param {*} source An annotation object (added by a transpiler or otherwise)
- * indicating filename, line number, and/or other information.
- * @param {*} owner
- * @param {*} props
- * @internal
- */
 var ReactElement$2 = function (type, key, ref, self, source, owner, props) {
   var element = {
     // This tag allow us to uniquely identify this as a React Element
@@ -616,8 +550,6 @@ var ReactElement_1 = ReactElement$2;
  * 
  */
 
-/* global Symbol */
-
 var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
 
@@ -653,13 +585,6 @@ var getIteratorFn_1 = getIteratorFn$1;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
- */
-
-/**
- * Escape and wrap key so it is safe to use as a reactid
- *
- * @param {string} key to be escaped.
- * @return {string} the escaped key.
  */
 
 function escape(key) {
@@ -711,12 +636,16 @@ var SEPARATOR = '.';
 var SUBSEPARATOR = ':';
 
 /**
- * Generate a key string that identifies a component within a set.
+ * This is inlined from ReactElement since this file is shared between
+ * isomorphic and renderers. We could extract this to a
  *
- * @param {*} component A component that could contain a manual key.
- * @param {number} index Index that is used if a manual key is not provided.
- * @return {string}
  */
+
+/**
+ * TODO: Test that a single child and an array with one item have the same key
+ * pattern.
+ */
+
 function getComponentKey(component, index) {
   // Do some typechecking here since we call this blindly. We want to ensure
   // that we don't block potential future ES APIs.
@@ -1101,9 +1030,6 @@ var _prodInvariant$2 = reactProdInvariant_1;
 var ReactNoopUpdateQueue = ReactNoopUpdateQueue_1;
 
 var emptyObject = emptyObject_1;
-/**
- * Base class helpers for the updating state of a component.
- */
 function ReactComponent$1(props, context, updater) {
   this.props = props;
   this.context = context;
@@ -2183,12 +2109,6 @@ var ReactElement$4 = ReactElement_1;
  * @private
  */
 var createDOMFactory = ReactElement$4.createFactory;
-/**
- * Creates a mapping from supported HTML tags to `ReactDOMComponent` classes.
- * This is also accessible via `React.DOM`.
- *
- * @public
- */
 var ReactDOMFactories$1 = {
   a: createDOMFactory('a'),
   abbr: createDOMFactory('abbr'),
@@ -2334,53 +2254,6 @@ var ReactPropTypesSecret$2 = ReactPropTypesSecret_1;
 
 var emptyFunction$3 = emptyFunction_1;
 var getIteratorFn$3 = getIteratorFn_1;
-/**
- * Collection of methods that allow declaration and validation of props that are
- * supplied to React components. Example usage:
- *
- *   var Props = require('ReactPropTypes');
- *   var MyArticle = React.createClass({
- *     propTypes: {
- *       // An optional string prop named "description".
- *       description: Props.string,
- *
- *       // A required enum prop named "category".
- *       category: Props.oneOf(['News','Photos']).isRequired,
- *
- *       // A prop named "dialog" that requires an instance of Dialog.
- *       dialog: Props.instanceOf(Dialog).isRequired
- *     },
- *     render: function() { ... }
- *   });
- *
- * A more formal specification of how these methods are used:
- *
- *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
- *   decl := ReactPropTypes.{type}(.isRequired)?
- *
- * Each and every declaration produces a function with the same signature. This
- * allows the creation of custom validation functions. For example:
- *
- *  var MyLink = React.createClass({
- *    propTypes: {
- *      // An optional string or URI prop named "href".
- *      href: function(props, propName, componentName) {
- *        var propValue = props[propName];
- *        if (propValue != null && typeof propValue !== 'string' &&
- *            !(propValue instanceof URI)) {
- *          return new Error(
- *            'Expected a string or an URI for ' + propName + ' in ' +
- *            componentName
- *          );
- *        }
- *      }
- *    },
- *    render: function() {...}
- *  });
- *
- * @internal
- */
-
 var ANONYMOUS = '<<anonymous>>';
 
 var ReactPropTypes$1 = {
@@ -2752,20 +2625,6 @@ var _prodInvariant$6 = reactProdInvariant_1;
 
 var ReactElement$7 = ReactElement_1;
 
-/**
- * Returns the first child in a collection of children and verifies that there
- * is only one child in the collection.
- *
- * See https://facebook.github.io/react/docs/top-level-api.html#react.children.only
- *
- * The current implementation of this function assumes that a single child gets
- * passed without a wrapper, but the purpose of this helper function is to
- * abstract away the particular structure of children.
- *
- * @param {?object} children Child collection structure.
- * @return {ReactElement} The first and only `ReactElement` contained in the
- * structure.
- */
 function onlyChild$1(children) {
   !ReactElement$7.isValidElement(children) ? _prodInvariant$6('143') : void 0;
   return children;
@@ -2844,13 +2703,6 @@ var react = React_1;
  *
  * 
  */
-/**
- * WARNING: DO NOT manually require this module.
- * This is a replacement for `invariant(...)` used by the error code system
- * and will _only_ be required by the corresponding babel pass.
- * It always throws.
- */
-
 function reactProdInvariant$1(code) {
   var argCount = arguments.length - 1;
 
@@ -3332,9 +3184,6 @@ var ARIADOMPropertyConfig_1 = ARIADOMPropertyConfig$1;
 
 var _prodInvariant$10 = reactProdInvariant_1$2;
 
-/**
- * Injectable ordering of event plugins.
- */
 var eventPluginOrder = null;
 
 /**
@@ -3615,14 +3464,6 @@ var _prodInvariant$11 = reactProdInvariant_1$2;
 
 var ReactErrorUtils$1 = ReactErrorUtils_1;
 
-/**
- * Injected dependencies:
- */
-
-/**
- * - `ComponentTree`: [required] Module that can convert between React instances
- *   and actual node references.
- */
 var ComponentTree;
 var TreeTraversal;
 var injection = {
@@ -3647,13 +3488,6 @@ function isStartish(topLevelType) {
   return topLevelType === 'topMouseDown' || topLevelType === 'topTouchStart';
 }
 
-/**
- * Dispatch the event to the listener.
- * @param {SyntheticEvent} event SyntheticEvent to handle
- * @param {boolean} simulated If the event is simulated (changes exn behavior)
- * @param {function} listener Application-level callback
- * @param {*} inst Internal component instance
- */
 function executeDispatch(event, simulated, listener, inst) {
   var type = event.type || 'unknown-event';
   event.currentTarget = EventPluginUtils$2.getNodeFromInstance(inst);
@@ -3795,19 +3629,6 @@ var EventPluginUtils_1 = EventPluginUtils$2;
 
 var _prodInvariant$12 = reactProdInvariant_1$2;
 
-/**
- * Accumulates items that must not be null or undefined into the first one. This
- * is used to conserve memory by avoiding array allocations, and thus sacrifices
- * API cleanness. Since `current` can be null before being passed in and not
- * null after this function, make sure to assign it back to `current`:
- *
- * `a = accumulateInto(a, b);`
- *
- * This API should be sparingly used. Try `accumulate` for something cleaner.
- *
- * @return {*|array<*>} An accumulation of items.
- */
-
 function accumulateInto$2(current, next) {
   !(next != null) ? _prodInvariant$12('30') : void 0;
 
@@ -3847,14 +3668,6 @@ var accumulateInto_1 = accumulateInto$2;
  * 
  */
 
-/**
- * @param {array} arr an "accumulation" of items which is either an Array or
- * a single item. Useful when paired with the `accumulate` module. This is a
- * simple utility that allows us to reason about a collection of items, but
- * handling the case when there is exactly one item (and we do not need to
- * allocate an array).
- */
-
 function forEachAccumulated$2(arr, cb, scope) {
   if (Array.isArray(arr)) {
     arr.forEach(cb, scope);
@@ -3873,9 +3686,6 @@ var ReactErrorUtils = ReactErrorUtils_1;
 
 var accumulateInto$1 = accumulateInto_1;
 var forEachAccumulated$1 = forEachAccumulated_1;
-/**
- * Internal store for event listeners
- */
 var listenerBank = {};
 
 /**
@@ -4282,13 +4092,6 @@ var ExecutionEnvironment_1 = ExecutionEnvironment$2;
 
 var _prodInvariant$13 = reactProdInvariant_1$2;
 
-/**
- * Static poolers. Several custom versions for each potential number of
- * arguments. A completely generic pooler is easy to implement, but would
- * require accessing the `arguments` object. In each of these, `this` refers to
- * the Class itself, not an instance. If any others are needed, simply add them
- * here, or in their own files.
- */
 var oneArgumentPooler$1 = function (copyFieldsFrom) {
   var Klass = this;
   if (Klass.instancePool.length) {
@@ -4632,12 +4435,6 @@ _assign$5(SyntheticEvent$1.prototype, {
 
 SyntheticEvent$1.Interface = EventInterface;
 
-/**
- * Helper to reduce boilerplate when creating subclasses.
- *
- * @param {function} Class
- * @param {?object} Interface
- */
 SyntheticEvent$1.augmentClass = function (Class, Interface) {
   var Super = this;
 
@@ -4658,6 +4455,14 @@ SyntheticEvent$1.augmentClass = function (Class, Interface) {
 PooledClass$4.addPoolingTo(SyntheticEvent$1, PooledClass$4.fourArgumentPooler);
 
 var SyntheticEvent_1 = SyntheticEvent$1;
+
+/**
+  * Helper to nullify syntheticEvent instance properties when destructing
+  *
+  * @param {object} SyntheticEvent
+  * @param {String} propName
+  * @return {object} defineProperty object
+  */
 
 var SyntheticEvent = SyntheticEvent_1;
 
@@ -5087,18 +4892,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var PooledClass$6 = PooledClass_1$2;
 
-/**
- * A specialized pseudo-event module to help keep track of components waiting to
- * be notified when their DOM representations are available for use.
- *
- * This implements `PooledClass`, so you should never need to instantiate this.
- * Instead, use `CallbackQueue.getPooled()`.
- *
- * @class ReactMountReady
- * @implements PooledClass
- * @internal
- */
-
 var CallbackQueue$1 = function () {
   function CallbackQueue(arg) {
     _classCallCheck(this, CallbackQueue);
@@ -5207,11 +5000,6 @@ var ReactFeatureFlags_1 = ReactFeatureFlags$1;
 
 var _prodInvariant$16 = reactProdInvariant_1$2;
 
-/**
- * @param {?object} object
- * @return {boolean} True if `object` is a valid owner.
- * @final
- */
 function isValidOwner(object) {
   return !!(object && typeof object.attachRef === 'function' && typeof object.detachRef === 'function');
 }
@@ -5417,17 +5205,6 @@ if (ExecutionEnvironment$6.canUseDOM) {
 }
 
 var performance_1 = performance$2 || {};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
 
 var performance$1 = performance_1;
 
@@ -5795,10 +5572,6 @@ if (/[?&]react_perf\b/.test(url)) {
 }
 
 var ReactRef = ReactRef_1;
-/**
- * Helper to call ReactRef.attachRefs with this composite component, split out
- * to avoid allocations in the transaction mount-ready queue.
- */
 function attachRefs() {
   ReactRef.attachRefs(this, this._currentElement);
 }
@@ -6365,14 +6138,6 @@ var ReactUpdates_1 = ReactUpdates$2;
  *
  */
 
-/**
- * Gets the target node from a native browser event by accounting for
- * inconsistencies in browser DOM APIs.
- *
- * @param {object} nativeEvent Native browser event.
- * @return {DOMEventTarget} Target node.
- */
-
 function getEventTarget$1(nativeEvent) {
   var target = nativeEvent.target || nativeEvent.srcElement || window;
 
@@ -6445,10 +6210,6 @@ var isEventSupported_1 = isEventSupported$1;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
- */
-
-/**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-input-element.html#input-type-attr-summary
  */
 
 var supportedInputTypes = {
@@ -6804,16 +6565,6 @@ var ChangeEventPlugin_1 = ChangeEventPlugin$1;
  *
  */
 
-/**
- * Module that is injectable into `EventPluginHub`, that specifies a
- * deterministic ordering of `EventPlugin`s. A convenient way to reason about
- * plugins, without having to package every one of them. This is better than
- * having plugins be ordered in the same order that they are injected because
- * that ordering would be influenced by the packaging order.
- * `ResponderEventPlugin` must occur before `SimpleEventPlugin` so that
- * preventing default on events is convenient in `SimpleEventPlugin` handlers.
- */
-
 var DefaultEventPluginOrder$1 = ['ResponderEventPlugin', 'SimpleEventPlugin', 'TapEventPlugin', 'EnterLeaveEventPlugin', 'ChangeEventPlugin', 'SelectEventPlugin', 'BeforeInputEventPlugin'];
 
 var DefaultEventPluginOrder_1 = DefaultEventPluginOrder$1;
@@ -6898,11 +6649,6 @@ var ViewportMetrics_1 = ViewportMetrics$1;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- */
-
-/**
- * Translation from modifier key to the associated property in the event.
- * @see http://www.w3.org/TR/DOM-Level-3-Events/#keys-Modifiers
  */
 
 var modifierKeyToProp = {
@@ -7309,10 +7055,6 @@ var DOMNamespaces_1 = DOMNamespaces$1;
 
 /* globals MSApp */
 
-/**
- * Create a function which has 'unsafe' privileges (required by windows8 apps)
- */
-
 var createMicrosoftUnsafeLocalFunction$3 = function (func) {
   if (typeof MSApp !== 'undefined' && MSApp.execUnsafeLocalFunction) {
     return function (arg0, arg1, arg2, arg3) {
@@ -7446,12 +7188,6 @@ var setInnerHTML_1 = setInnerHTML$2;
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- */
-
-// code copied and modified from escape-html
-/**
- * Module variables.
- * @private
  */
 
 var matchHtmlRegExp = /["'&<>]/;
@@ -7680,17 +7416,6 @@ DOMLazyTree$1.queueText = queueText;
 
 var DOMLazyTree_1 = DOMLazyTree$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
 var invariant$21 = invariant_1;
 
 /**
@@ -7805,18 +7530,6 @@ function createArrayFromMixed$1(obj) {
 
 var createArrayFromMixed_1 = createArrayFromMixed$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- */
-
-/*eslint-disable fb-www/unsafe-html */
-
 var ExecutionEnvironment$12 = ExecutionEnvironment_1;
 
 var invariant$22 = invariant_1;
@@ -7897,19 +7610,6 @@ function getMarkupWrap$1(nodeName) {
 }
 
 var getMarkupWrap_1 = getMarkupWrap$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
-/*eslint-disable fb-www/unsafe-html*/
 
 var ExecutionEnvironment$11 = ExecutionEnvironment_1;
 
@@ -8114,9 +7814,6 @@ function replaceDelimitedText(openingComment, closingComment, stringText) {
 }
 
 var dangerouslyReplaceNodeWithMarkup = Danger.dangerouslyReplaceNodeWithMarkup;
-/**
- * Operations for updating with DOM children.
- */
 var DOMChildrenOperations$1 = {
 
   dangerouslyReplaceNodeWithMarkup: dangerouslyReplaceNodeWithMarkup,
@@ -8212,10 +7909,6 @@ var ReactComponentBrowserEnvironment_1 = ReactComponentBrowserEnvironment$1;
  *
  */
 
-/**
- * @param {DOMElement} node input/textarea to focus
- */
-
 function focusNode$1(node) {
   // IE8 can throw "Can't move focus to the control because it is invisible,
   // not enabled, or of a type that does not accept the focus." for all kinds of
@@ -8247,10 +7940,6 @@ var AutoFocusUtils_1 = AutoFocusUtils$1;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- */
-
-/**
- * CSS properties which accept numbers but are not in units of "px".
  */
 
 var isUnitlessNumber = {
@@ -8387,16 +8076,6 @@ var CSSProperty_1 = CSSProperty$1;
 
 var CSSProperty$2 = CSSProperty_1;
 var isUnitlessNumber$1 = CSSProperty$2.isUnitlessNumber;
-/**
- * Convert a value into the proper css writable value. The style name `name`
- * should be logical (no hyphens), as specified
- * in `CSSProperty.isUnitlessNumber`.
- *
- * @param {string} name CSS property name such as `topMargin`.
- * @param {*} value CSS property value such as `10px`.
- * @param {ReactDOMComponent} component
- * @return {string} Normalized style value with dimensions applied.
- */
 function dangerousStyleValue$1(name, value, component) {
   // Note that we've removed escapeTextForBrowser() calls here since the
   // whole string will be escaped when the attribute is injected into
@@ -8425,17 +8104,6 @@ function dangerousStyleValue$1(name, value, component) {
 }
 
 var dangerousStyleValue_1 = dangerousStyleValue$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
 
 var _uppercasePattern = /([A-Z])/g;
 
@@ -8495,10 +8163,6 @@ var hyphenateStyleName_1 = hyphenateStyleName$1;
  * @typechecks static-only
  */
 
-/**
- * Memoizes the return value of a function that accepts one string argument.
- */
-
 function memoizeStringOnly$1(callback) {
   var cache = {};
   return function (string) {
@@ -8536,9 +8200,6 @@ if (ExecutionEnvironment$13.canUseDOM) {
   }
 }
 
-/**
- * Operations for dealing with CSS properties.
- */
 var CSSPropertyOperations$1 = {
 
   /**
@@ -9390,22 +9051,6 @@ function forceUpdateIfMounted() {
   }
 }
 
-/**
- * Implements an <input> host component that allows setting these optional
- * props: `checked`, `value`, `defaultChecked`, and `defaultValue`.
- *
- * If `checked` or `value` are not supplied (or null/undefined), user actions
- * that affect the checked state or value will trigger updates to the element.
- *
- * If they are supplied (and not null/undefined), the rendered element will not
- * trigger updates to the element. Instead, the props must change in order for
- * the rendered element to be updated.
- *
- * The rendered element will be initialized as unchecked (or `defaultChecked`)
- * with an empty value (or `defaultValue`).
- *
- * @see http://www.w3.org/TR/2012/WD-html5-20121025/the-input-element.html
- */
 var ReactDOMInput$1 = {
   getHostProps: function (inst, props) {
     var value = LinkedValueUtils.getValue(props);
@@ -9607,12 +9252,6 @@ function updateOptionsIfPendingUpdateAndMounted() {
   }
 }
 
-/**
- * @param {ReactDOMComponent} inst
- * @param {boolean} multiple
- * @param {*} propValue A stringable (with `multiple`, a list of stringables).
- * @private
- */
 function updateOptions(inst, multiple, propValue) {
   var selectedValue, i;
   var options = ReactDOMComponentTree$12.getNodeFromInstance(inst).options;
@@ -10001,15 +9640,6 @@ var ReactComponentEnvironment_1 = ReactComponentEnvironment$1;
  *
  */
 
-/**
- * `ReactInstanceMap` maintains a mapping from a public facing stateful
- * instance (key) and the internal representation (value). This allows public
- * methods to accept the user facing instance as an argument and map them back
- * to internal methods.
- */
-
-// TODO: Replace this with ES6: var ReactInstanceMap = new Map();
-
 var ReactInstanceMap$1 = {
 
   /**
@@ -10160,18 +9790,6 @@ var shallowEqual_1 = shallowEqual$2;
  *
  */
 
-/**
- * Given a `prevElement` and `nextElement`, determines if the existing
- * instance should be updated as opposed to being destroyed or replaced by a new
- * instance. Both arguments are elements. This ensures that this logic can
- * operate on stateless trees without any backing instance.
- *
- * @param {?object} prevElement
- * @param {?object} nextElement
- * @return {boolean} True if the existing instance should be updated.
- * @protected
- */
-
 function shouldUpdateReactComponent$2(prevElement, nextElement) {
   var prevEmpty = prevElement === null || prevElement === false;
   var nextEmpty = nextElement === null || nextElement === false;
@@ -10230,39 +9848,7 @@ function isPureComponent(Component) {
   return !!(Component.prototype && Component.prototype.isPureReactComponent);
 }
 
-/**
- * ------------------ The Life-Cycle of a Composite Component ------------------
- *
- * - constructor: Initialization of state. The instance is now retained.
- *   - componentWillMount
- *   - render
- *   - [children's constructors]
- *     - [children's componentWillMount and render]
- *     - [children's componentDidMount]
- *     - componentDidMount
- *
- *       Update Phases:
- *       - componentWillReceiveProps (only called if parent updated)
- *       - shouldComponentUpdate
- *         - componentWillUpdate
- *           - render
- *           - [children's constructors or receive props phases]
- *         - componentDidUpdate
- *
- *     - componentWillUnmount
- *     - [children's componentWillUnmount]
- *   - [children destroyed]
- * - (destroyed): The instance is now blank, released by React and ready for GC.
- *
- * -----------------------------------------------------------------------------
- */
-
-/**
- * An incrementing ID assigned to each component when it is mounted. This is
- * used to enforce the order in which `ReactUpdates` updates dirty components.
- *
- * @private
- */
+// Separated into a function to contain deoptimizations caused by try/finally.
 var nextMountID = 1;
 
 /**
@@ -11016,7 +10602,6 @@ var ReactCompositeComponent = ReactCompositeComponent_1;
 var ReactEmptyComponent = ReactEmptyComponent_1;
 var ReactHostComponent = ReactHostComponent_1;
 
-// To avoid a cyclic dependency, we create the final class in this module
 var ReactCompositeComponentWrapper = function (element) {
   this.construct(element);
 };
@@ -11108,13 +10693,6 @@ var instantiateReactComponent_1 = instantiateReactComponent$1;
  * 
  */
 
-/**
- * Escape and wrap key so it is safe to use as a reactid
- *
- * @param {string} key to be escaped.
- * @return {string} the escaped key.
- */
-
 function escape$1(key) {
   var escapeRegex = /[=:]/g;
   var escaperLookup = {
@@ -11165,9 +10743,6 @@ var KeyEscapeUtils_1$2 = KeyEscapeUtils$3;
  * 
  */
 
-// The Symbol used to tag the ReactElement type. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-
 var REACT_ELEMENT_TYPE$4 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
 
 var ReactElementSymbol$2 = REACT_ELEMENT_TYPE$4;
@@ -11182,8 +10757,6 @@ var ReactElementSymbol$2 = REACT_ELEMENT_TYPE$4;
  *
  * 
  */
-
-/* global Symbol */
 
 var ITERATOR_SYMBOL$1 = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL$1 = '@@iterator'; // Before Symbol spec.
@@ -11221,12 +10794,16 @@ var SEPARATOR$1 = '.';
 var SUBSEPARATOR$1 = ':';
 
 /**
- * Generate a key string that identifies a component within a set.
+ * This is inlined from ReactElement since this file is shared between
+ * isomorphic and renderers. We could extract this to a
  *
- * @param {*} component A component that could contain a manual key.
- * @param {number} index Index that is used if a manual key is not provided.
- * @return {string}
  */
+
+/**
+ * TODO: Test that a single child and an array with one item have the same key
+ * pattern.
+ */
+
 function getComponentKey$1(component, index) {
   // Do some typechecking here since we call this blindly. We want to ensure
   // that we don't block potential future ES APIs.
@@ -11516,13 +11093,6 @@ var ReactReconciler$3 = ReactReconciler_1;
 var ReactChildReconciler = ReactChildReconciler_1;
 
 var flattenChildren$1 = flattenChildren_1;
-/**
- * Make an update for markup to be rendered and inserted at a supplied index.
- *
- * @param {string} markup Markup that renders into an element.
- * @param {number} toIndex Destination index.
- * @private
- */
 function makeInsertMarkup(markup, afterNode, toIndex) {
   // NOTE: Null values reduce hidden classes.
   return {
@@ -11629,12 +11199,6 @@ function processQueue(inst, updateQueue) {
   ReactComponentEnvironment.processChildrenUpdates(inst, updateQueue);
 }
 
-/**
- * ReactMultiChild are capable of reconciling multiple children.
- *
- * @class ReactMultiChild
- * @internal
- */
 var ReactMultiChild$1 = {
 
   /**
@@ -12315,10 +11879,6 @@ function getDeclarationErrorAddendum$1(internalInstance) {
   return '';
 }
 
-/**
- * @param {object} component
- * @param {?object} props
- */
 function assertValidProps(component, props) {
   if (!props) {
     return;
@@ -12369,8 +11929,6 @@ function optionPostMount() {
   ReactDOMOption.postMountWrapper(inst);
 }
 
-// There are so many media events, it makes sense to just
-// maintain a list rather than create a `trapBubbledEvent` for each
 var mediaEvents = {
   topAbort: 'abort',
   topCanPlay: 'canplay',
@@ -13155,10 +12713,6 @@ var ReactDOMEmptyComponent_1 = ReactDOMEmptyComponent$1;
 
 var _prodInvariant$32 = reactProdInvariant_1$2;
 
-/**
- * Return the lowest common ancestor of A and B, or null if they are in
- * different trees.
- */
 function getLowestCommonAncestor(instA, instB) {
   !('_hostNode' in instA) ? _prodInvariant$32('33') : void 0;
   !('_hostNode' in instB) ? _prodInvariant$32('33') : void 0;
@@ -13283,21 +12837,6 @@ var DOMLazyTree$5 = DOMLazyTree_1;
 var ReactDOMComponentTree$15 = ReactDOMComponentTree_1;
 
 var escapeTextContentForBrowser$4 = escapeTextContentForBrowser_1;
-/**
- * Text nodes violate a couple assumptions that React makes about components:
- *
- *  - When mounting text into the DOM, adjacent text nodes are merged.
- *  - Text nodes cannot be assigned a React root ID.
- *
- * This component is used to wrap strings between comment nodes so that they
- * can undergo the same reconciliation that is applied to elements.
- *
- * TODO: Investigate representing React components in the DOM with text nodes.
- *
- * @class ReactDOMTextComponent
- * @extends ReactComponent
- * @internal
- */
 var ReactDOMTextComponent$1 = function (text) {
   // TODO: This is really a ReactText (ReactNode), not a ReactElement
   this._currentElement = text;
@@ -13466,24 +13005,6 @@ var ReactDefaultBatchingStrategy$1 = {
 
 var ReactDefaultBatchingStrategy_1 = ReactDefaultBatchingStrategy$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @typechecks
- */
-
 var emptyFunction$10 = emptyFunction_1;
 
 /**
@@ -13554,17 +13075,6 @@ var EventListener_1 = EventListener$1;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @typechecks
- */
-
-/**
- * Gets the scroll position of the supplied element or window.
- *
- * The return values are unbounded, unlike `getScrollPosition`. This means they
- * may be negative or exceed the element boundaries (which is possible using
- * inertial scrolling).
- *
- * @param {DOMWindow|DOMElement} scrollable
- * @return {object} Map with `x` and `y` keys.
  */
 
 function getUnboundedScrollPosition$1(scrollable) {
@@ -13755,13 +13265,6 @@ var ReactInjection_1 = ReactInjection$1;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- */
-
-/**
- * Given any node return the first leaf node without children.
- *
- * @param {DOMElement|DOMTextNode} node
- * @return {DOMElement|DOMTextNode}
  */
 
 function getLeafNode(node) {
@@ -14019,37 +13522,11 @@ var ReactDOMSelection$1 = {
 
 var ReactDOMSelection_1 = ReactDOMSelection$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
-/**
- * @param {*} object The object to check.
- * @return {boolean} Whether or not the object is a DOM node.
- */
 function isNode$2(object) {
   return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
 }
 
 var isNode_1 = isNode$2;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
 
 var isNode$1 = isNode_1;
 
@@ -14062,17 +13539,6 @@ function isTextNode$1(object) {
 }
 
 var isTextNode_1 = isTextNode$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
 
 var isTextNode = isTextNode_1;
 
@@ -14101,26 +13567,6 @@ function containsNode$1(outerNode, innerNode) {
 
 var containsNode_1 = containsNode$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
-/* eslint-disable fb-www/typeof-undefined */
-
-/**
- * Same as document.activeElement but wraps in a try-catch block. In IE it is
- * not safe to call document.activeElement if there is nothing focused.
- *
- * The activeElement will be null only if the document or document body is not
- * yet defined.
- */
 function getActiveElement$1() /*?DOMElement*/{
   if (typeof document === 'undefined') {
     return null;
@@ -14323,20 +13769,6 @@ var ON_DOM_READY_QUEUEING = {
  */
 var TRANSACTION_WRAPPERS$3 = [SELECTION_RESTORATION, EVENT_SUPPRESSION, ON_DOM_READY_QUEUEING];
 
-/**
- * Currently:
- * - The order that these are listed in the transaction is critical:
- * - Suppresses events.
- * - Restores selection range.
- *
- * Future:
- * - Restore document/overflow scroll positions that were unintentionally
- *   modified via DOM insertions above the top viewport boundary.
- * - Implement/integrate with customized constraint based layout system and keep
- *   track of which dimensions must be remeasured.
- *
- * @class ReactReconcileTransaction
- */
 function ReactReconcileTransaction$1(useCreateElement) {
   this.reinitializeTransaction();
   // Only server-side rendering really needs this option (see
@@ -14970,17 +14402,6 @@ var SyntheticFocusEvent_1 = SyntheticFocusEvent$1;
  *
  */
 
-/**
- * `charCode` represents the actual "character code" and is safe to use with
- * `String.fromCharCode`. As such, only keys that correspond to printable
- * characters produce a valid `charCode`, the only exception to this is Enter.
- * The Tab-key is considered non-printable and does not have a `charCode`,
- * presumably because it does not produce a tab-character in browsers.
- *
- * @param {object} nativeEvent Native browser event.
- * @return {number} Normalized `charCode` property.
- */
-
 function getEventCharCode$2(nativeEvent) {
   var charCode;
   var keyCode = nativeEvent.keyCode;
@@ -15315,24 +14736,6 @@ var SyntheticWheelEvent = SyntheticWheelEvent_1;
 
 var emptyFunction$11 = emptyFunction_1;
 var getEventCharCode = getEventCharCode_1;
-/**
- * Turns
- * ['abort', ...]
- * into
- * eventTypes = {
- *   'abort': {
- *     phasedRegistrationNames: {
- *       bubbled: 'onAbort',
- *       captured: 'onAbortCapture',
- *     },
- *     dependencies: ['topAbort'],
- *   },
- *   ...
- * };
- * topLevelEventsToDispatchConfig = {
- *   'topAbort': { sameConfig }
- * };
- */
 var eventTypes$4 = {};
 var topLevelEventsToDispatchConfig = {};
 ['abort', 'animationEnd', 'animationIteration', 'animationStart', 'blur', 'canPlay', 'canPlayThrough', 'click', 'contextMenu', 'copy', 'cut', 'doubleClick', 'drag', 'dragEnd', 'dragEnter', 'dragExit', 'dragLeave', 'dragOver', 'dragStart', 'drop', 'durationChange', 'emptied', 'encrypted', 'ended', 'error', 'focus', 'input', 'invalid', 'keyDown', 'keyPress', 'keyUp', 'load', 'loadedData', 'loadedMetadata', 'loadStart', 'mouseDown', 'mouseMove', 'mouseOut', 'mouseOver', 'mouseUp', 'paste', 'pause', 'play', 'playing', 'progress', 'rateChange', 'reset', 'scroll', 'seeked', 'seeking', 'stalled', 'submit', 'suspend', 'timeUpdate', 'touchCancel', 'touchEnd', 'touchMove', 'touchStart', 'transitionEnd', 'volumeChange', 'waiting', 'wheel'].forEach(function (event) {
@@ -15848,16 +15251,24 @@ function hasNonRootReactChild(container) {
 }
 
 /**
- * True if the supplied DOM node is a valid node element.
+ * True if the supplied DOM node is a React DOM element and
+ * it has been rendered by another copy of React.
  *
  * @param {?DOMElement} node The candidate DOM node.
- * @return {boolean} True if the DOM is a valid DOM node.
+ * @return {boolean} True if the DOM has been rendered by another copy of React
  * @internal
  */
 function isValidContainer(node) {
   return !!(node && (node.nodeType === ELEMENT_NODE_TYPE$1 || node.nodeType === DOC_NODE_TYPE || node.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE$1));
 }
 
+/**
+ * True if the supplied DOM node is a valid React node element.
+ *
+ * @param {?DOMElement} node The candidate DOM node.
+ * @return {boolean} True if the DOM is a valid React DOM node.
+ * @internal
+ */
 function getHostRootInstanceInContainer(container) {
   var rootEl = getReactRootElementInContainer(container);
   var prevHostInstance = rootEl && ReactDOMComponentTree$19.getInstanceFromNode(rootEl);
@@ -16164,14 +15575,6 @@ var ReactDOMComponentTree$20 = ReactDOMComponentTree_1;
 var ReactInstanceMap$5 = ReactInstanceMap_1;
 
 var getHostComponentFromComposite$1 = getHostComponentFromComposite_1;
-/**
- * Returns the DOM node rendered by this element.
- *
- * See https://facebook.github.io/react/docs/top-level-api.html#reactdom.finddomnode
- *
- * @param {ReactComponent|DOMElement} componentOrElement
- * @return {?DOMElement} The root node of this element.
- */
 function findDOMNode$1(componentOrElement) {
   if (componentOrElement == null) {
     return null;
@@ -16248,30 +15651,6 @@ if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined' && typeof __REACT_DEVT
 var ReactDOM_1 = ReactDOM;
 
 var index$2 = ReactDOM_1;
-
-function parse(dataString) {
-  const [headerData, ...frames] = dataString.split(/[\r\n]+/).map(line => line.split(';').filter(entry => entry).map(entry => entry.split(',').map(processEntry)));
-
-  return {
-    header: processHeaderData(headerData),
-    frames
-  };
-}
-
-function processHeaderData(data) {
-  const [worldName, missionName, author, captureInterval] = data[0];
-  return {
-    worldName,
-    missionName,
-    author,
-    captureInterval
-  };
-}
-
-function processEntry(entry) {
-  const number = Number.parseFloat(entry);
-  return Number.isNaN(number) ? entry === 'true' ? true : entry === 'false' ? false : entry : number;
-}
 
 function createEmitter(object) {
   const handlers = {};
@@ -16466,8 +15845,6 @@ function createInvalid (flags) {
     return m;
 }
 
-// Plugins that add properties should also add the key here (null value),
-// so we can properly clone ourselves.
 var momentProperties = hooks$1.momentProperties = [];
 
 function copyConfig(to, from) {
@@ -16559,7 +15936,6 @@ function toInt(argumentForCoercion) {
     return value;
 }
 
-// compare two arrays, return the number of differences
 function compareArrays(array1, array2, dontConvert) {
     var len = Math.min(array1.length, array2.length),
         lengthDiff = Math.abs(array1.length - array2.length),
@@ -17347,8 +16723,6 @@ function computeMonthsParse () {
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
 }
 
-// FORMATTING
-
 addFormatToken('Y', 0, 0, function () {
     var y = this.year();
     return y <= 9999 ? '' + y : '+' + y;
@@ -17435,7 +16809,6 @@ function createUTCDate (y) {
     return date;
 }
 
-// start-of-first-week - start-of-year
 function firstWeekOffset(year, dow, doy) {
     var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
         fwd = 7 + dow - doy,
@@ -17497,8 +16870,6 @@ function weeksInYear(year, dow, doy) {
     return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
 }
 
-// FORMATTING
-
 addFormatToken('w', ['ww', 2], 'wo', 'week');
 addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
 
@@ -17555,8 +16926,6 @@ function getSetISOWeek (input) {
     var week = weekOfYear(this, 1, 4).week;
     return input == null ? week : this.add((input - week) * 7, 'd');
 }
-
-// FORMATTING
 
 addFormatToken('d', 0, 'do', 'day');
 
@@ -17909,8 +17278,6 @@ function computeWeekdaysParse () {
     this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
 }
 
-// FORMATTING
-
 function hFormat() {
     return this.hours() % 12 || 12;
 }
@@ -18043,10 +17410,6 @@ function localeMeridiem (hours, minutes, isLower) {
 // this rule.
 var getSetHour = makeGetSet('Hours', true);
 
-// months
-// week
-// weekdays
-// meridiem
 var baseConfig = {
     calendar: defaultCalendar,
     longDateFormat: defaultLongDateFormat,
@@ -18067,7 +17430,6 @@ var baseConfig = {
     meridiemParse: defaultLocaleMeridiemParse
 };
 
-// internal storage for locale config files
 var locales = {};
 var localeFamilies = {};
 var globalLocale;
@@ -18273,8 +17635,6 @@ function checkOverflow (m) {
     return m;
 }
 
-// iso 8601 regex
-// 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
 var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
 var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
 
@@ -18614,7 +17974,6 @@ function dayOfYearFromWeekInfo(config) {
     }
 }
 
-// constant that refers to the ISO standard
 hooks$1.ISO_8601 = function () {};
 
 // constant that refers to the RFC 2822 form
@@ -18718,7 +18077,6 @@ function meridiemFixWrap (locale, hour, meridiem) {
     }
 }
 
-// date from string and array of format strings
 function configFromStringAndArray(config) {
     var tempConfig,
         bestMoment,
@@ -19015,8 +18373,6 @@ function absRound (number) {
     }
 }
 
-// FORMATTING
-
 function offset (token, separator) {
     addFormatToken(token, 0, 0, function () {
         var offset = this.utcOffset();
@@ -19235,7 +18591,6 @@ function isUtc () {
     return this.isValid() ? this._isUTC && this._offset === 0 : false;
 }
 
-// ASP.NET json date format regex
 var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
 // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
@@ -19348,7 +18703,6 @@ function momentsDifference(base, other) {
     return res;
 }
 
-// TODO: remove 'name' arg after deprecation is removed
 function createAdder(direction, name) {
     return function (val, period) {
         var dur, tmp;
@@ -19617,9 +18971,6 @@ function toNow (withoutSuffix) {
     return this.to(createLocal(), withoutSuffix);
 }
 
-// If passed a locale key, it will set the locale for this
-// instance.  Otherwise, it will return the locale configuration
-// variables for this instance.
 function locale (key) {
     var newLocaleData;
 
@@ -19764,8 +19115,6 @@ function creationData() {
     };
 }
 
-// FORMATTING
-
 addFormatToken(0, ['gg', 2], 0, function () {
     return this.weekYear() % 100;
 });
@@ -19861,8 +19210,6 @@ function setWeekAll(weekYear, week, weekday, dow, doy) {
     return this;
 }
 
-// FORMATTING
-
 addFormatToken('Q', 0, 'Qo', 'quarter');
 
 // ALIASES
@@ -19885,8 +19232,6 @@ addParseToken('Q', function (input, array) {
 function getSetQuarter (input) {
     return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
 }
-
-// FORMATTING
 
 addFormatToken('D', ['DD', 2], 'Do', 'date');
 
@@ -19917,8 +19262,6 @@ addParseToken('Do', function (input, array) {
 
 var getSetDayOfMonth = makeGetSet('Date', true);
 
-// FORMATTING
-
 addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
 
 // ALIASES
@@ -19945,8 +19288,6 @@ function getSetDayOfYear (input) {
     return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
 }
 
-// FORMATTING
-
 addFormatToken('m', ['mm', 2], 0, 'minute');
 
 // ALIASES
@@ -19967,8 +19308,6 @@ addParseToken(['m', 'mm'], MINUTE);
 
 var getSetMinute = makeGetSet('Minutes', false);
 
-// FORMATTING
-
 addFormatToken('s', ['ss', 2], 0, 'second');
 
 // ALIASES
@@ -19988,8 +19327,6 @@ addParseToken(['s', 'ss'], SECOND);
 // MOMENTS
 
 var getSetSecond = makeGetSet('Seconds', false);
-
-// FORMATTING
 
 addFormatToken('S', 0, 0, function () {
     return ~~(this.millisecond() / 100);
@@ -20049,8 +19386,6 @@ for (token = 'S'; token.length <= 9; token += 'S') {
 // MOMENTS
 
 var getSetMillisecond = makeGetSet('Milliseconds', false);
-
-// FORMATTING
 
 addFormatToken('z',  0, 0, 'zoneAbbr');
 addFormatToken('zz', 0, 0, 'zoneName');
@@ -20690,8 +20025,6 @@ proto$2.lang = lang;
 
 // Side effect imports
 
-// FORMATTING
-
 addFormatToken('X', 0, 0, 'unix');
 addFormatToken('x', 0, 0, 'valueOf');
 
@@ -20756,7 +20089,6 @@ function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
-/** Detect free variable `global` from Node.js. */
 var freeGlobal$1 = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
 
 var _freeGlobal = freeGlobal$1;
@@ -24063,82 +23395,6 @@ function createMapController(mapElement, state, settings) {
   }
 }
 
-function createCaptureLoadDialog(modalDialogElement, captureIndex, loadCapture) {
-
-  let dialogElements = null;
-
-  return {
-    initialize,
-    open,
-    close
-  };
-
-  function initialize() {
-    dialogElements = createContainer();
-    prepareCaptureList(dialogElements.body);
-  }
-
-  function createContainer() {
-    const container = document.querySelector('#captureLoadDialog');
-    const body = container.querySelector('.modalBody');
-
-    container.querySelector('.modalCloseButton').addEventListener('click', close);
-
-    return { container, body };
-  }
-
-  function prepareCaptureList(body) {
-    const tableBody = body.querySelector('tbody');
-    const tableHeader = body.querySelector('thead');
-    tableHeader.appendChild(Object.assign(document.createElement('th'), { innerText: 'Mission' }));
-    tableHeader.appendChild(Object.assign(document.createElement('th'), { innerText: 'World' }));
-    tableHeader.appendChild(Object.assign(document.createElement('th'), { innerText: 'Duration' }));
-    tableHeader.appendChild(Object.assign(document.createElement('th'), { innerText: 'Date' }));
-    captureIndex.forEach(entry => tableBody.appendChild(createEntry(entry)));
-  }
-
-  function createEntry(entry) {
-    const listItem = document.createElement('tr');
-
-    const missionName = document.createElement('td');
-    missionName.classList.add('captureItem-missionName');
-    missionName.innerText = entry.missionName;
-    listItem.appendChild(missionName);
-
-    const worldName = document.createElement('td');
-    worldName.classList.add('captureItem-worldName');
-    worldName.innerText = entry.worldName;
-    listItem.appendChild(worldName);
-
-    const duration = document.createElement('td');
-    duration.classList.add('captureItem-duration');
-    duration.innerText = hooks$1.utc(entry.duration * 1000).format("HH:mm:ss");
-    listItem.appendChild(duration);
-
-    const date = document.createElement('td');
-    date.classList.add('captureItem-date');
-    date.innerText = hooks$1.unix(entry.date).format("DD.MM.YYYY");
-    listItem.appendChild(date);
-
-    listItem.addEventListener('click', () => loadCapture(entry));
-
-    return listItem;
-  }
-
-  function open() {
-    modalDialogElement.classList.toggle('visible', true);
-    if (modalDialogElement.firstChild) {
-      modalDialogElement.replaceChild(dialogElements.container, modalDialogElement.firstChild);
-    } else {
-      modalDialogElement.appendChild(dialogElements.container);
-    }
-  }
-
-  function close() {
-    modalDialogElement.classList.toggle('visible', false);
-  }
-}
-
 var index$3 = createCommonjsModule(function (module) {
 /*!
   Copyright (c) 2016 Jed Watson.
@@ -24191,6 +23447,30 @@ var index$3 = createCommonjsModule(function (module) {
 });
 
 var styles$1 = __$styleInject(".ui-container {\r\n  z-index: 100;\r\n}\r\n\r\n.ui-leftPanel {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 40px;\r\n  width: 192px;\r\n  height: calc(100% - 40px - 40px);\r\n\r\n  background-color: rgba(0, 0, 0, .8);\r\n}\r\n\r\n.ui-rightPanel {\r\n  position: absolute;\r\n  right: 0;\r\n  top: 40px;\r\n  width: 384px;\r\n  height: 512px;\r\n\r\n  background-color: rgba(0, 0, 0, .8);\r\n}\r\n\r\n.ui-topPanel {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 40px;\r\n\r\n  background-color: rgba(0, 0, 0, .8);\r\n}\r\n\r\n.ui-bottomPanel {\r\n  position: absolute;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 32px;\r\n  background-color: rgba(0, 0, 0, .8);\r\n  padding-top: 8px;\r\n  line-height: 1.5em;\r\n}\r\n", { "container": "ui-container", "leftPanel": "ui-leftPanel", "rightPanel": "ui-rightPanel", "topPanel": "ui-topPanel", "bottomPanel": "ui-bottomPanel" });
+
+function parse(dataString) {
+  const [headerData, ...frames] = dataString.split(/[\r\n]+/).map(line => line.split(';').filter(entry => entry).map(entry => entry.split(',').map(processEntry)));
+
+  return {
+    header: processHeaderData(headerData),
+    frames
+  };
+}
+
+function processHeaderData(data) {
+  const [worldName, missionName, author, captureInterval] = data[0];
+  return {
+    worldName,
+    missionName,
+    author,
+    captureInterval
+  };
+}
+
+function processEntry(entry) {
+  const number = Number.parseFloat(entry);
+  return Number.isNaN(number) ? entry === 'true' ? true : entry === 'false' ? false : entry : number;
+}
 
 /**
  * This method returns the first argument it receives.
@@ -26979,6 +26259,97 @@ function HeaderBar({ state, map, player }) {
   );
 }
 
+var styles$5 = __$styleInject("\r\n.loadDialog-modal {\r\n  position: fixed;\r\n  z-index: 99999999;\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0, 0, 0, .4);\r\n}\r\n\r\n.loadDialog-modalContent {\r\n  top: 50%;\r\n  left: 50%;\r\n  -webkit-transform: translate(-50%, -50%);\r\n          transform: translate(-50%, -50%);\r\n}\r\n\r\n.loadDialog-modalHeader {\r\n  box-sizing: border-box;\r\n  background-color: rgba(205, 134, 20, .9);\r\n  width: 100%;\r\n  font-weight: 500;\r\n  line-height: 2em;\r\n  padding: 0 1em;\r\n}\r\n\r\n.loadDialog-modalBody {\r\n  box-sizing: border-box;\r\n  background-color: rgba(0, 0, 0, .7);\r\n  width: 100%;\r\n  min-height: 200px;\r\n  max-height: 400px;\r\n  height: auto;\r\n  padding: 0.5em;\r\n  overflow-y: auto;\r\n  overflow-x: auto;\r\n  text-align: left;\r\n}\r\n\r\n.loadDialog-modalBody a {\r\n  color: white;\r\n  text-decoration: none;\r\n}\r\n\r\n.loadDialog-modalBody a:hover {\r\n  text-decoration: underline;\r\n}\r\n\r\n.loadDialog-modalBody table {\r\n  border-collapse: collapse;\r\n  border: none;\r\n  width: 100%;\r\n}\r\n\r\n.loadDialog-modalBody th {\r\n  background-color: rgba(0, 0, 0, .7);\r\n  padding: 0 1em;\r\n  font-weight: 500;\r\n  text-align: left;\r\n}\r\n\r\n.loadDialog-modalBody td {\r\n  padding: 0 1em;\r\n}\r\n\r\n.loadDialog-modalBody tr {\r\n  text-align: right;\r\n}\r\n\r\n.loadDialog-modalBody tr:hover {\r\n  background-color: rgba(205, 134, 20, .9);\r\n}\r\n\r\n.loadDialog-modalFooter {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  text-align: right;\r\n  background: none;\r\n  margin-top: 3px;\r\n  height: 15px;\r\n}\r\n\r\n.loadDialog-modalButton {\r\n  display: inline-block;\r\n  height: 100%;\r\n  min-width: 100px;\r\n  background-color: rgba(0, 0, 0, .7);\r\n  margin-right: 10px;\r\n  padding: 5px;\r\n  text-transform: uppercase;\r\n  text-align: left;\r\n}\r\n\r\n.loadDialog-modalButton:last-child {\r\n  margin-right: 0;\r\n}\r\n\r\n.loadDialog-modalButton:hover {\r\n  background-color: #FFF;\r\n  color: #000;\r\n}\r\n\r\n.loadDialog-modalContainer {\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  -webkit-transform: translate(-50%, -50%);\r\n          transform: translate(-50%, -50%);\r\n}\r\n\r\n.loadDialog-modalTitle {\r\n}\r\n\r\n.loadDialog-modalCloseButton {\r\n  position: absolute;\r\n  right: 0;\r\n  margin: 0 0.5em;\r\n}\r\n", { "modal": "loadDialog-modal", "modalContent": "loadDialog-modalContent", "modalHeader": "loadDialog-modalHeader", "modalBody": "loadDialog-modalBody", "modalFooter": "loadDialog-modalFooter", "modalButton": "loadDialog-modalButton", "modalContainer": "loadDialog-modalContainer", "modalTitle": "loadDialog-modalTitle", "modalCloseButton": "loadDialog-modalCloseButton" });
+
+function LoadDialog({ entries, loadCapture }) {
+  return react.createElement(
+    'div',
+    { className: styles$5.modal },
+    react.createElement(
+      'div',
+      { className: styles$5.modalContainer },
+      react.createElement(
+        'div',
+        { className: styles$5.modalHeader },
+        react.createElement(
+          'span',
+          null,
+          'Load mission capture'
+        ),
+        react.createElement(
+          'span',
+          { className: styles$5.modalCloseButton, onClick: close },
+          '\u2716'
+        )
+      ),
+      react.createElement(
+        'div',
+        { className: styles$5.modalBody },
+        react.createElement(
+          'table',
+          null,
+          react.createElement(
+            'thead',
+            null,
+            react.createElement(
+              'th',
+              null,
+              'Mission'
+            ),
+            react.createElement(
+              'th',
+              null,
+              'World'
+            ),
+            react.createElement(
+              'th',
+              null,
+              'Duration'
+            ),
+            react.createElement(
+              'th',
+              null,
+              'Date'
+            )
+          ),
+          react.createElement(
+            'tbody',
+            null,
+            entries.map(entry => react.createElement(CaptureEntry, { entry: entry, onClick: loadCapture }))
+          )
+        )
+      )
+    )
+  );
+}
+
+function CaptureEntry({ entry, entry: { missionName, worldName, duration, date }, onClick }) {
+  return react.createElement(
+    'tr',
+    { onClick: () => onClick(entry) },
+    react.createElement(
+      'td',
+      null,
+      missionName
+    ),
+    react.createElement(
+      'td',
+      null,
+      worldName
+    ),
+    react.createElement(
+      'td',
+      null,
+      hooks$1.utc(duration * 1000).format("HH:mm:ss")
+    ),
+    react.createElement(
+      'td',
+      null,
+      hooks$1.unix(date).format("DD.MM.YYYY")
+    )
+  );
+}
+
 class EventLog extends react.Component {
   constructor() {
     super();
@@ -27014,31 +26385,62 @@ class EventLog extends react.Component {
   }
 }
 
-function App({ state, map, player }) {
-  return react.createElement(
-    'div',
-    { className: styles$1.container },
-    react.createElement(
+class App extends react.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      loadDialogOpen: true
+    };
+  }
+
+  loadCapture(entry) {
+    const { state, map, player, mapIndex } = this.props;
+
+    const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase());
+
+    return fetch(entry.captureFilePath).then(response => response.text()).then(parse).then(({ frames }) => {
+      state.reset();
+      map.loadWorld(worldInfo);
+      player.load(frames);
+      player.reset();
+    }).then(() => {
+      this.setState({
+        loadDialogOpen: false
+      });
+    });
+  }
+
+  render() {
+    const { state, map, player, captureIndex } = this.props;
+    const { loadDialogOpen } = this.state;
+
+    return react.createElement(
       'div',
-      { className: styles$1.topPanel },
-      react.createElement(HeaderBar, { map: map, state: state, player: player })
-    ),
-    react.createElement(
-      'div',
-      { className: styles$1.leftPanel },
-      react.createElement(UnitList, { map: map, state: state, player: player })
-    ),
-    react.createElement(
-      'div',
-      { className: styles$1.rightPanel },
-      react.createElement(EventLog, { state: state })
-    ),
-    react.createElement(
-      'div',
-      { className: styles$1.bottomPanel },
-      react.createElement(PlaybackWidget, { player: player })
-    )
-  );
+      { className: styles$1.container },
+      react.createElement(
+        'div',
+        { className: styles$1.topPanel },
+        react.createElement(HeaderBar, { map: map, state: state, player: player })
+      ),
+      react.createElement(
+        'div',
+        { className: styles$1.leftPanel },
+        react.createElement(UnitList, { map: map, state: state, player: player })
+      ),
+      react.createElement(
+        'div',
+        { className: styles$1.rightPanel },
+        react.createElement(EventLog, { state: state })
+      ),
+      react.createElement(
+        'div',
+        { className: styles$1.bottomPanel },
+        react.createElement(PlaybackWidget, { player: player })
+      ),
+      loadDialogOpen && react.createElement(LoadDialog, { entries: captureIndex, loadCapture: this.loadCapture.bind(this) })
+    );
+  }
 }
 
 /*global fetch*/
@@ -27049,37 +26451,11 @@ const map = createMapController(document.querySelector('#map'), state, settings)
 const player = createPlayer(state, settings);
 
 (function initOcap() {
-
-  index$2.render(react.createElement(App, { settings: settings, map: map, state: state, player: player }), document.querySelector('#root'));
-
-  return readIndices().then(([mapIndex, captureIndex]) => showLoadDialog(mapIndex, captureIndex)).catch(error => console.error(error));
+  return readIndices().then(([mapIndex, captureIndex]) => index$2.render(react.createElement(App, { settings: settings, map: map, state: state, player: player, mapIndex: mapIndex, captureIndex: captureIndex }), document.querySelector('#root'))).catch(error => console.error(error));
 })();
 
 function readIndices() {
   return Promise.all([fetch(MAP_INDEX_URL).then(response => response.json()), fetch(CAPTURE_INDEX_URL).then(response => response.json())]);
-}
-
-function showLoadDialog(mapIndex, captureIndex) {
-
-  const captureLoadDialog = createCaptureLoadDialog(document.querySelector('#modal'), captureIndex, handleSelectEntry);
-  //document.querySelector('#openCaptureLoadDialog').addEventListener('click', () => captureLoadDialog.open());
-  captureLoadDialog.initialize();
-  captureLoadDialog.open();
-
-  function handleSelectEntry(entry) {
-    captureLoadDialog.close();
-    const worldInfo = mapIndex.find(world => world.worldName.toLowerCase() === entry.worldName.toLowerCase());
-    loadCaptureFile(entry.captureFilePath, worldInfo);
-  }
-}
-
-function loadCaptureFile(captureFilePath, worldInfo) {
-  return fetch(captureFilePath).then(response => response.text()).then(parse).then(({ frames }) => {
-    state.reset();
-    map.loadWorld(worldInfo);
-    player.load(frames);
-    player.reset();
-  });
 }
 
 })));
