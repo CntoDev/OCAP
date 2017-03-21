@@ -20483,7 +20483,8 @@ function applyKilledEvent(state, event, frameIndex) {
   const victimId = event[1];
   state.entities[victimId].alive = false;
   addBattleEvent(state, event);
-  addLoggedEvent(state, react.createElement(KilledLog, { frameIndex: frameIndex, victim: state.entities[event[1]], shooter: state.entities[event[2]] }));
+  addLoggedEvent(state, react.createElement(KilledLog, { frameIndex: frameIndex, victim: state.entities[event[1]],
+    shooter: state.entities[event[2]] }));
 }
 
 function applyGotInEvent(state, [, unitId, vehicleId]) {
@@ -20517,14 +20518,15 @@ function KilledLog({ shooter, victim, frameIndex }) {
     ' was killed by ',
     react.createElement(
       'span',
-      { className: styles[shooter.side] },
+      {
+        className: styles[shooter.side] },
       shooter.name
     ),
     react.createElement('br', null),
     react.createElement(
       'span',
       { className: styles.eventDetails },
-      hooks$1.utc(frameIndex * 1000).format("HH:mm:ss")
+      hooks$1.utc(frameIndex * 1000).format('HH:mm:ss')
     )
   );
 }
@@ -20543,7 +20545,7 @@ function ConnectedLog({ player, frameIndex }) {
     react.createElement(
       'span',
       { className: styles.eventDetails },
-      hooks$1.utc(frameIndex * 1000).format("HH:mm:ss")
+      hooks$1.utc(frameIndex * 1000).format('HH:mm:ss')
     )
   );
 }
@@ -20562,7 +20564,7 @@ function DisconnectedLog({ player, frameIndex }) {
     react.createElement(
       'span',
       { className: styles.eventDetails },
-      hooks$1.utc(frameIndex * 1000).format("HH:mm:ss")
+      hooks$1.utc(frameIndex * 1000).format('HH:mm:ss')
     )
   );
 }
@@ -23258,6 +23260,51 @@ function createMapController(mapElement, state, settings) {
     }).addTo(map);
 
     map.setView(map.unproject([imageSize / 2, imageSize / 2]), MAP_MIN_ZOOM);
+
+    let drawing = false;
+
+    window.addEventListener('keydown', function (e) {
+      if (e.ctrlKey) {
+        map.dragging.disable();
+        drawing = true;
+      } else {
+        map.dragging.enable();
+        drawing = false;
+      }
+    });
+
+    window.addEventListener('keyup', function (e) {
+      if (e.ctrlKey) {
+        map.dragging.disable();
+        drawing = true;
+      } else {
+        map.dragging.enable();
+        drawing = false;
+      }
+    });
+
+    let line;
+
+    map.on('mousedown', function (e) {
+      if (drawing) {
+        const thisLine = line = L.polyline([e.latlng], { className: 'testLine' });
+        thisLine.on('click', () => thisLine.removeFrom(map));
+        thisLine.addTo(map);
+      }
+    });
+
+    map.on('mousemove', function (e) {
+      if (drawing && line) {
+        line.addLatLng(e.latlng);
+      }
+    });
+
+    map.on('mouseup', function (e) {
+      if (drawing) {
+        line = null;
+      }
+    });
+
     map.on('dragstart', () => state.follow(null));
 
     mapElement.addEventListener('wheel', event => {
@@ -23279,7 +23326,7 @@ function createMapController(mapElement, state, settings) {
 
     if (state.followedUnit) {
       const pose = state.followedUnit.pose;
-      if (pose != null) {
+      if (pose !== null) {
         map.setView(coordinatesToLatLng(pose), map.getZoom());
       } else {}
     }
@@ -26250,12 +26297,12 @@ class PlaybackWidget extends react.Component {
 
 var styles$4 = __$styleInject(".headerBar-container {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n}\r\n\r\n.headerBar-logo {\r\n  background: url(\"images/ocap-logo.png\") center no-repeat;\r\n  background-size: 70px auto;\r\n  width: 192px;\r\n  height: 40px;\r\n}\r\n\r\n.headerBar-loadButton {\r\n  background: url(\"images/folder.png\") center no-repeat;\r\n  background-size: 25px 25px;\r\n  width: 40px;\r\n  height: 40px;\r\n}", { "container": "headerBar-container", "logo": "headerBar-logo", "loadButton": "headerBar-loadButton" });
 
-function HeaderBar({ state, map, player }) {
+function HeaderBar({ openLoadProject }) {
   return react.createElement(
     'div',
     { className: index$3(styles$4.container) },
     react.createElement('div', { className: index$3(styles$4.logo) }),
-    react.createElement('div', { className: index$3(styles$4.loadButton) })
+    react.createElement('div', { className: index$3(styles$4.loadButton), onClick: openLoadProject })
   );
 }
 
@@ -26315,7 +26362,7 @@ function LoadDialog({ entries, loadCapture }) {
           react.createElement(
             'tbody',
             null,
-            entries.map(entry => react.createElement(CaptureEntry, { entry: entry, onClick: loadCapture }))
+            entries.map((entry, index) => react.createElement(CaptureEntry, { key: index, entry: entry, onClick: loadCapture }))
           )
         )
       )
@@ -26340,12 +26387,12 @@ function CaptureEntry({ entry, entry: { missionName, worldName, duration, date }
     react.createElement(
       'td',
       null,
-      hooks$1.utc(duration * 1000).format("HH:mm:ss")
+      hooks$1.utc(duration * 1000).format('HH:mm:ss')
     ),
     react.createElement(
       'td',
       null,
-      hooks$1.unix(date).format("DD.MM.YYYY")
+      hooks$1.unix(date).format('DD.MM.YYYY')
     )
   );
 }
@@ -26421,7 +26468,7 @@ class App extends react.Component {
       react.createElement(
         'div',
         { className: styles$1.topPanel },
-        react.createElement(HeaderBar, { map: map, state: state, player: player })
+        react.createElement(HeaderBar, { openLoadProject: () => this.setState({ loadDialogOpen: true }) })
       ),
       react.createElement(
         'div',
@@ -26451,7 +26498,8 @@ const map = createMapController(document.querySelector('#map'), state, settings)
 const player = createPlayer(state, settings);
 
 (function initOcap() {
-  return readIndices().then(([mapIndex, captureIndex]) => index$2.render(react.createElement(App, { settings: settings, map: map, state: state, player: player, mapIndex: mapIndex, captureIndex: captureIndex }), document.querySelector('#root'))).catch(error => console.error(error));
+  return readIndices().then(([mapIndex, captureIndex]) => index$2.render(react.createElement(App, { settings: settings, map: map, state: state, player: player, mapIndex: mapIndex,
+    captureIndex: captureIndex }), document.querySelector('#root'))).catch(error => console.error(error));
 })();
 
 function readIndices() {
