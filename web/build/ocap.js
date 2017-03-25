@@ -20286,6 +20286,8 @@ const CAPTURE_INDEX_URL = 'data/index.json';
 
 
 const EVENT_SPAWNED = 'S';
+
+
 const EVENT_RESPAWNED = 'R';
 const EVENT_DESPAWNED = 'X';
 const EVENT_CONNECTED = 'C';
@@ -20309,8 +20311,11 @@ const DEFAULT_SETTINGS = {
     ai: false,
     players: true,
     vehicles: true
-  }
+  },
+  hideCurators: true
 };
+
+const OCAP_FORMAT_VERSION = 1.0;
 
 function createEntity(event) {
   switch (event[2]) {
@@ -20569,6 +20574,89 @@ function DisconnectedLog({ player, frameIndex }) {
   );
 }
 
+/*
+export function createEvent (state, event, frameIndex) {
+  switch (event[0]) {
+    case EVENT_MOVED:
+      return new MoveEvent(event, frameIndex)
+    case EVENT_SPAWNED:
+      return applySpawnedEvent(state, event)
+    case EVENT_RESPAWNED:
+      return applyRespawnedEvent(state, event)
+    case EVENT_DESPAWNED:
+      return applyDespawnedEvent(state, event)
+    case EVENT_CONNECTED:
+      return applyConnectedEvent(state, event, frameIndex)
+    case EVENT_DISCONNECTED:
+      return applyDisconnectedEvent(state, event, frameIndex)
+    case EVENT_FIRED:
+      return applyFiredEvent(state, event)
+    case EVENT_HIT:
+      return applyHitEvent(state, event, frameIndex)
+    case EVENT_KILLED:
+      return applyKilledEvent(state, event, frameIndex)
+    case EVENT_GOT_IN:
+      return applyGotInEvent(state, event)
+    case EVENT_GOT_OUT:
+      return applyGotOutEvent(state, event)
+    default:
+      return
+  }
+}
+
+function SpawnedEvent([, entityId, x, y, dir], frameIndex) {
+  Object.assign(this, {
+    frameIndex,
+    entityId,
+    x,
+    y,
+    dir,
+  })
+}
+
+function UnitSpawnedEvent([], frameIndex) {
+  Object.assign(this, {
+  })
+}
+
+function VehicleSpawnedEvent([], frameIndex) {
+  Object.assign(this, {
+  })
+}
+
+
+SpawnedEvent.prototype.apply = function applySpawnedEvent (state) {
+  const oldMarker = state.entities[event[1]] && state.entities[event[1]].marker
+
+  const entity = createEntity(event)
+  state.entities[entity.id] = entity
+  entity.marker = oldMarker
+}
+
+
+function MoveEvent([, entityId, x, y, dir], frameIndex) {
+  Object.assign(this, {
+    frameIndex,
+    entityId,
+    x,
+    y,
+    dir,
+  })
+}
+
+MoveEvent.prototype.apply = function applyMoveEvent (state) {
+  const entityPose = state.entities[this.entityId].pose
+  const newPose = {
+    x: isNumber(this.x) ? this.x : entityPose.x,
+    y: isNumber(this.y) ? this.y : entityPose.y,
+    dir: isNumber(this.dir) ? this.dir : entityPose.dir,
+  }
+  Object.assign(entityPose, newPose);
+
+  (entityPose.crew || []).forEach(unit => Object.assign(unit.pose, newPose))
+}
+*/
+
 function createPlayer(state, settings) {
   let frames = null;
   let intervalHandle = null;
@@ -20630,7 +20718,8 @@ function createPlayer(state, settings) {
   function goTo(frameIndex) {
     currentFrameIndex = -1;
     state.eventLog = [];
-    while (currentFrameIndex !== frameIndex) applyNextFrame();
+    while (currentFrameIndex < frameIndex) applyNextFrame(true);
+    applyNextFrame();
     player.emit('nextFrame', player.currentFrameIndex, player.totalFrameCount);
   }
 
@@ -20640,24 +20729,24 @@ function createPlayer(state, settings) {
     applyNextFrame();
   }
 
-  function applyNextFrame() {
+  function applyNextFrame(suppressUpdate = false) {
     const currentFrame = frames[++currentFrameIndex];
 
     if (currentFrame) {
-      applyFrameToState(currentFrame);
+      applyFrameToState(currentFrame, suppressUpdate);
       return true;
     } else {
       return false;
     }
   }
 
-  function applyFrameToState(frame) {
+  function applyFrameToState(frame, suppressUpdate) {
     state.events = [];
     frame.forEach(event => applyEvent(state, event, currentFrameIndex));
-    state.update({});
+    if (!suppressUpdate) {
+      state.update({});
+    }
   }
-
-  
 }
 
 function createState(settings) {
@@ -23345,7 +23434,7 @@ function createMapController(mapElement, state, settings) {
       dead: !entity.alive,
       hit: false,
       killed: false,
-      inVehicle: !!entity.vehicle
+      inVehicle: !!entity.vehicle || settings.hideCurators && entity.isCurator
     });
 
     renderPopup(marker, entity);
@@ -23361,7 +23450,7 @@ function createMapController(mapElement, state, settings) {
     } else if (entity.crew && entity.crew.some(unit => unit.isPlayer) && settings.labels.vehicles && settings.labels.players) {
       marker.openPopup();
 
-      marker.getPopup().setContent(entity.description + ' (' + entity.crew.length + ')<br>' + entity.crew.map(unit => unit.name).join('<br>'));
+      marker.getPopup().setContent(`${entity.description} (${entity.crew.length})<br>` + entity.crew.map(unit => unit.name).join('<br>'));
     } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
       marker.openPopup();
     }
@@ -23496,21 +23585,32 @@ var index$3 = createCommonjsModule(function (module) {
 var styles$1 = __$styleInject(".app-container {\r\n  z-index: 100;\r\n}\r\n\r\n.app-leftPanel {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 40px;\r\n  width: 192px;\r\n  height: calc(100% - 40px - 40px);\r\n\r\n  background-color: rgba(0, 0, 0, .8);\r\n}\r\n\r\n.app-rightPanel {\r\n  position: absolute;\r\n  right: 0;\r\n  top: 40px;\r\n  width: 384px;\r\n  height: 512px;\r\n\r\n  background-color: rgba(0, 0, 0, .8);\r\n}\r\n\r\n.app-topPanel {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 40px;\r\n\r\n  background-color: rgba(0, 0, 0, .8);\r\n}\r\n\r\n.app-bottomPanel {\r\n  position: absolute;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 32px;\r\n  background-color: rgba(0, 0, 0, .8);\r\n  padding-top: 8px;\r\n  line-height: 1.5em;\r\n}\r\n", { "container": "app-container", "leftPanel": "app-leftPanel", "rightPanel": "app-rightPanel", "topPanel": "app-topPanel", "bottomPanel": "app-bottomPanel" });
 
 function parse(dataString) {
-  const [headerData, ...frames] = dataString.split(/[\r\n]+/).map(line => line.split(';').filter(entry => entry).map(entry => entry.split(',').map(processEntry)));
+  console.time('parse');
+
+  const [headerLine, ...frameLines] = dataString.split(/[\r\n]+/);
+
+  const header = processHeader(headerLine);
+
+  if (header.formatVersion !== OCAP_FORMAT_VERSION) throw new Error('Incompatible OCAP format!');
+
+  const frames = frameLines.map(line => line.split(';').filter(entry => entry).map(entry => entry.split(',').map(processEntry)));
+
+  console.timeEnd('parse');
 
   return {
-    header: processHeaderData(headerData),
+    header,
     frames
   };
 }
 
-function processHeaderData(data) {
-  const [worldName, missionName, author, captureInterval] = data[0];
+function processHeader(headerString) {
+  const [formatVersion, worldName, missionName, author, captureInterval] = headerString.split(',');
   return {
+    formatVersion: Number.parseFloat(formatVersion),
     worldName,
     missionName,
     author,
-    captureInterval
+    captureInterval: Number.parseInt(captureInterval)
   };
 }
 
@@ -26244,8 +26344,8 @@ class PlaybackWidget extends react.Component {
     const { playing, currentFrameIndex, frameCount } = this.state;
 
     const value = currentFrameIndex;
-    const max = frameCount;
-    const currentTime = currentFrameIndex !== -1 ? hooks$1.utc(currentFrameIndex * 1000).format("HH:mm:ss") : '--:--:--';
+    const max = frameCount - 1;
+    const currentTime = currentFrameIndex !== -1 ? hooks$1.utc((currentFrameIndex + 1) * 1000).format("HH:mm:ss") : '--:--:--';
     const endTime = frameCount !== -1 ? hooks$1.utc(frameCount * 1000).format("HH:mm:ss") : '--:--:--';
 
     return react.createElement(
@@ -26259,7 +26359,7 @@ class PlaybackWidget extends react.Component {
         '/',
         endTime
       ),
-      react.createElement('input', { className: styles$3.slider, type: 'range', min: '0', value: value, max: max, step: '1', onChange: this.skipToFrame.bind(this) })
+      react.createElement('input', { className: styles$3.slider, type: 'range', min: '1', value: value, max: max, step: '1', onChange: this.skipToFrame.bind(this) })
     );
   }
 
@@ -26271,7 +26371,8 @@ class PlaybackWidget extends react.Component {
   }
 
   skipToFrame(event) {
-    this.props.player.goTo(Number.parseInt(event.target.value));
+    const value = Number.parseInt(event.target.value);
+    this.props.player.goTo(value);
   }
 
   togglePlayback() {
@@ -26415,12 +26516,12 @@ function EventLog({ eventLog }) {
 }
 
 class App extends react.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       loadDialogOpen: true,
-      eventLog: this.props.state.eventLog
+      eventLog: props.state.eventLog
     };
   }
 
@@ -26480,10 +26581,12 @@ class App extends react.Component {
 }
 
 /*global fetch, console*/
-const settings = Object.assign({}, DEFAULT_SETTINGS);
+const mapElement = document.querySelector('#map');
+const appRootElement = document.querySelector('#root');
 
+const settings = Object.assign({}, DEFAULT_SETTINGS);
 const state = createState(settings);
-const map = createMapController(document.querySelector('#map'), state, settings);
+const map = createMapController(mapElement, state, settings);
 const player = createPlayer(state, settings);
 
 (function initOcap() {
@@ -26492,7 +26595,7 @@ const player = createPlayer(state, settings);
     state: state,
     player: player,
     mapIndex: mapIndex,
-    captureIndex: captureIndex }), document.querySelector('#root'))).catch(error => console.error(error));
+    captureIndex: captureIndex }), appRootElement)).catch(error => console.error(error));
 })();
 
 function readIndices() {
