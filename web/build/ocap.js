@@ -20280,7 +20280,8 @@ var isNumber_1 = isNumber$1;
 
 var styles = __$styleInject(".eventLog-list {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: reverse;\r\n      -ms-flex-direction: column-reverse;\r\n          flex-direction: column-reverse;\r\n  font-size: 14px;\r\n  list-style: none;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.eventLog-header {\r\n  background-color: rgba(0, 0, 0, .3);\r\n  text-align: center;\r\n  padding: 0.5em;\r\n}\r\n\r\n.eventLog-event {\r\n  display: block;\r\n  padding: 0.25em;\r\n  margin: 0 0.25em;\r\n  border-top: white 1px solid;\r\n}\r\n\r\n.eventLog-eventDetails {\r\n  font-size: 12px;\r\n  color: #9a9a9a;\r\n}\r\n\r\n.eventLog-east {\r\n  font-weight: 500;\r\n  color: rgb(255, 0, 0);\r\n}\r\n\r\n.eventLog-west {\r\n  font-weight: 500;\r\n  color: rgb(0, 150, 255);\r\n}\r\n\r\n.eventLog-ind {\r\n  font-weight: 500;\r\n  color: rgb(0, 255, 0);\r\n}\r\n\r\n.eventLog-civ {\r\n  font-weight: 500;\r\n  color: rgb(214, 0, 255);\r\n}\r\n", { "list": "eventLog-list", "header": "eventLog-header", "event": "eventLog-event", "eventDetails": "eventLog-eventDetails", "east": "eventLog-east", "west": "eventLog-west", "ind": "eventLog-ind", "civ": "eventLog-civ" });
 
-const MAP_INDEX_URL = 'images/maps/index.json';
+const MAP_DIRECTORY = 'maps';
+const MAP_INDEX_URL = `${MAP_DIRECTORY}/index.json`;
 const CAPTURE_INDEX_URL = 'data/index.json';
 
 
@@ -23339,7 +23340,7 @@ function createMapController(mapElement, state, settings) {
 
     map.fitBounds(mapBounds);
 
-    L.tileLayer('images/maps/' + worldName + '/{z}/{x}/{y}.png', {
+    L.tileLayer(`${MAP_DIRECTORY}/${worldName}/{z}/{x}/{y}.png`, {
       maxNativeZoom: MAP_MAX_NATIVE_ZOOM,
       maxZoom: MAP_MAX_ZOOM,
       minZoom: MAP_MIN_ZOOM,
@@ -23512,7 +23513,7 @@ function createMapController(mapElement, state, settings) {
     } else if (event[0] === 'F') {
       const shooter = state.entities[event[1]];
 
-      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng({ x: event[2], y: event[3] })], { className: 'hitLine fired' });
+      line = L.polyline([coordinatesToLatLng(shooter.pose), coordinatesToLatLng({ x: event[2], y: event[3] })], { className: 'hitLine ' + shooter.side });
     }
 
     line.addTo(map);
@@ -26321,7 +26322,7 @@ function UnitSymbol({ symbol }) {
   );
 }
 
-var styles$3 = __$styleInject(".playbackWidget-container {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n  padding: 0 0.5em;\r\n}\r\n\r\n.playbackWidget-playButton {\r\n  position: relative;\r\n  background-image: url(\"images/play-pause.png\");\r\n  background-position: 100% 0;\r\n  height: 16px;\r\n  width: 16px;\r\n  background-size: auto 16px;\r\n  top: 4px;\r\n  margin: 0 0.5em;\r\n\r\n  -webkit-box-flex: 0;\r\n\r\n      -ms-flex-positive: 0;\r\n\r\n          flex-grow: 0;\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n}\r\n\r\n.playbackWidget-playButton.playbackWidget-paused {\r\n  background-position: 0 0;\r\n}\r\n\r\n.playbackWidget-timeDisplay {\r\n  -webkit-box-flex: 0;\r\n      -ms-flex-positive: 0;\r\n          flex-grow: 0;\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  margin: 0 0.5em;\r\n}\r\n\r\n.playbackWidget-slider {\r\n  -webkit-box-flex: 1;\r\n      -ms-flex-positive: 1;\r\n          flex-grow: 1;\r\n  -ms-flex-negative: 1;\r\n      flex-shrink: 1;\r\n  margin: 0 0.5em;\r\n}", { "container": "playbackWidget-container", "playButton": "playbackWidget-playButton", "paused": "playbackWidget-paused", "timeDisplay": "playbackWidget-timeDisplay", "slider": "playbackWidget-slider" });
+var styles$3 = __$styleInject(".playbackWidget-container {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n  padding: 0 0.5em;\r\n}\r\n\r\n.playbackWidget-playButton {\r\n  position: relative;\r\n  background-image: url(\"images/play-pause.png\");\r\n  background-position: 100% 0;\r\n  height: 16px;\r\n  width: 16px;\r\n  background-size: auto 16px;\r\n  top: 4px;\r\n  margin: 0 0.5em;\r\n\r\n  -webkit-box-flex: 0;\r\n\r\n      -ms-flex-positive: 0;\r\n\r\n          flex-grow: 0;\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n}\r\n\r\n.playbackWidget-playButton.playbackWidget-paused {\r\n  background-position: 0 0;\r\n}\r\n\r\n.playbackWidget-timeDisplay {\r\n  -webkit-box-flex: 0;\r\n      -ms-flex-positive: 0;\r\n          flex-grow: 0;\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  margin: 0 0.5em;\r\n}\r\n\r\n.playbackWidget-slider {\r\n  -webkit-box-flex: 1;\r\n      -ms-flex-positive: 1;\r\n          flex-grow: 1;\r\n  -ms-flex-negative: 1;\r\n      flex-shrink: 1;\r\n  margin: 0 0.5em;\r\n}\r\n\r\n.playbackWidget-playbackSpeedWidget {\r\n  display: inline-block;\r\n  position: relative;\r\n}\r\n\r\n.playbackWidget-playbackSpeedButton {\r\n  position: relative;\r\n}\r\n\r\n.playbackWidget-playbackSpeedSlider {\r\n  display: none;\r\n  position: absolute;\r\n  top: -48px;\r\n  left: -24px;\r\n  width: 80px;\r\n  -webkit-transform: rotate(270deg);\r\n          transform: rotate(270deg);\r\n}\r\n\r\n.playbackWidget-playbackSpeedSlider.playbackWidget-visible {\r\n  display: block;\r\n}\r\n", { "container": "playbackWidget-container", "playButton": "playbackWidget-playButton", "paused": "playbackWidget-paused", "timeDisplay": "playbackWidget-timeDisplay", "slider": "playbackWidget-slider", "playbackSpeedWidget": "playbackWidget-playbackSpeedWidget", "playbackSpeedButton": "playbackWidget-playbackSpeedButton", "playbackSpeedSlider": "playbackWidget-playbackSpeedSlider", "visible": "playbackWidget-visible" });
 
 class PlaybackWidget extends react.Component {
   constructor() {
@@ -26337,7 +26338,7 @@ class PlaybackWidget extends react.Component {
   componentDidMount() {
     this.props.player.on('nextFrame', this.updateTime.bind(this, true));
     this.props.player.on('load', this.updateTime.bind(this, false));
-    window.addEventListener("keypress", this.handleKeyboardInput.bind(this));
+    window.addEventListener('keypress', this.handleKeyboardInput.bind(this));
   }
 
   render() {
@@ -26345,8 +26346,8 @@ class PlaybackWidget extends react.Component {
 
     const value = currentFrameIndex;
     const max = frameCount - 1;
-    const currentTime = currentFrameIndex !== -1 ? hooks$1.utc((currentFrameIndex + 1) * 1000).format("HH:mm:ss") : '--:--:--';
-    const endTime = frameCount !== -1 ? hooks$1.utc(frameCount * 1000).format("HH:mm:ss") : '--:--:--';
+    const currentTime = currentFrameIndex !== -1 ? hooks$1.utc((currentFrameIndex + 1) * 1000).format('HH:mm:ss') : '--:--:--';
+    const endTime = frameCount !== -1 ? hooks$1.utc(frameCount * 1000).format('HH:mm:ss') : '--:--:--';
 
     return react.createElement(
       'div',
@@ -26359,7 +26360,9 @@ class PlaybackWidget extends react.Component {
         '/',
         endTime
       ),
-      react.createElement('input', { className: styles$3.slider, type: 'range', min: '1', value: value, max: max, step: '1', onChange: this.skipToFrame.bind(this) })
+      react.createElement('input', { className: styles$3.slider, type: 'range', min: '1', value: value, max: max, step: '1',
+        onChange: this.skipToFrame.bind(this) }),
+      react.createElement(PlaybackSpeedWidget, { player: this.props.player })
     );
   }
 
@@ -26393,6 +26396,42 @@ class PlaybackWidget extends react.Component {
       currentFrameIndex,
       frameCount
     });
+  }
+}
+
+class PlaybackSpeedWidget extends react.Component {
+  constructor({ player }) {
+    super();
+
+    this.state = {
+      sliderVisible: false,
+      playbackSpeed: player.playbackSpeed
+    };
+  }
+
+  updatePlaybackSpeed(newPlaybackSpeed) {
+    this.props.player.playbackSpeed = newPlaybackSpeed;
+    this.setState({
+      playbackSpeed: newPlaybackSpeed
+    });
+  }
+
+  render() {
+    const { sliderVisible, playbackSpeed } = this.state;
+
+    return react.createElement(
+      'div',
+      { className: index$3(styles$3.playbackSpeedWidget) },
+      react.createElement(
+        'span',
+        { className: styles$3.playbackSpeedButton, onClick: () => this.setState({ sliderVisible: !sliderVisible }) },
+        playbackSpeed,
+        '\xD7'
+      ),
+      react.createElement('input', { className: index$3(styles$3.playbackSpeedSlider, sliderVisible && styles$3.visible),
+        type: 'range', min: '1', value: playbackSpeed, max: '60', step: '1',
+        onChange: event => this.updatePlaybackSpeed(Number.parseFloat(event.target.value)) })
+    );
   }
 }
 
@@ -26587,9 +26626,7 @@ const appRootElement = document.querySelector('#root');
 const settings = Object.assign({}, DEFAULT_SETTINGS);
 const state = createState(settings);
 const map = createMapController(mapElement, state, settings);
-const player = createPlayer(state, settings);
-
-(function initOcap() {
+const player = createPlayer(state, settings);(function initOcap() {
   return readIndices().then(([mapIndex, captureIndex]) => index$2.render(react.createElement(App, { settings: settings,
     map: map,
     state: state,
