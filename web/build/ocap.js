@@ -23408,8 +23408,9 @@ function createMapController(mapElement, state, settings) {
     marker.bindPopup(createPopup(entity));
     marker.on('click', () => {
       state.follow(entity);
+      marker.openPopup();
     });
-    marker.on('mouseover', () => settings.labels.mouseOver && marker.openPopup());
+    marker.on('mouseover', () => (entity.followed || settings.labels.mouseOver) && marker.openPopup());
     marker.on('mouseout', () => settings.labels.mouseOver && marker.closePopup());
 
     markers[entity.id] = marker;
@@ -27352,7 +27353,7 @@ function isEqual(value, other) {
 
 var isEqual_1 = isEqual;
 
-var styles$2 = __$styleInject(".unitList-container {\r\n  position: relative;\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n}\r\n\r\n.unitList-header {\r\n  background-color: rgba(0, 0, 0, .3);\r\n  text-align: center;\r\n  padding: 0.5em;\r\n}\r\n\r\n.unitList-listContainer {\r\n  -webkit-box-flex: 1;\r\n      -ms-flex-positive: 1;\r\n          flex-grow: 1;\r\n  overflow: scroll;\r\n}\r\n\r\n.unitList-list {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  font-size: smaller;\r\n}\r\n\r\n.unitList-settings {\r\n\r\n}\r\n\r\n.unitList-side {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-groupList {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n}\r\n\r\n.unitList-group {\r\n  padding-left: 0.5em;\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-unitList {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n}\r\n\r\n.unitList-unit {\r\n  padding-left: 1em;\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-unit.unitList-dead {\r\n  color: #aaaaaa;\r\n}\r\n\r\n.unitList-unit:hover {\r\n  background-color: rgba(205, 134, 20, .9);\r\n}\r\n\r\n.unitList-unitSymbol {\r\n  padding-left: 0.25em;\r\n}\r\n\r\n.unitList-sideName {\r\n  padding-left: 0.5em;\r\n  text-transform: uppercase;\r\n  font-size: larger;\r\n  font-weight: bold;\r\n}\r\n\r\n.unitList-east {\r\n  font-weight: 500;\r\n  color: rgb(255, 0, 0);\r\n}\r\n\r\n.unitList-west {\r\n  font-weight: 500;\r\n  color: rgb(0, 150, 255);\r\n}\r\n\r\n.unitList-ind {\r\n  font-weight: 500;\r\n  color: rgb(0, 255, 0);\r\n}\r\n\r\n.unitList-civ {\r\n  font-weight: 500;\r\n  color: rgb(214, 0, 255);\r\n}\r\n", { "container": "unitList-container", "header": "unitList-header", "listContainer": "unitList-listContainer", "list": "unitList-list", "settings": "unitList-settings", "side": "unitList-side", "groupList": "unitList-groupList", "group": "unitList-group", "unitList": "unitList-unitList", "unit": "unitList-unit", "dead": "unitList-dead", "unitSymbol": "unitList-unitSymbol", "sideName": "unitList-sideName", "east": "unitList-east", "west": "unitList-west", "ind": "unitList-ind", "civ": "unitList-civ" });
+var styles$2 = __$styleInject(".unitList-container {\r\n  position: relative;\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n}\r\n\r\n.unitList-header {\r\n  background-color: rgba(0, 0, 0, .3);\r\n  text-align: center;\r\n  padding: 0.5em;\r\n}\r\n\r\n.unitList-listContainer {\r\n  -webkit-box-flex: 1;\r\n      -ms-flex-positive: 1;\r\n          flex-grow: 1;\r\n  overflow: scroll;\r\n}\r\n\r\n.unitList-list {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  font-size: smaller;\r\n  padding-left: 0.5em;\r\n}\r\n\r\n.unitList-settings {\r\n\r\n}\r\n\r\n.unitList-collapseButton {\r\n}\r\n\r\n.unitList-side {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-groupList {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  padding-left: 0.75em;\r\n}\r\n\r\n.unitList-groupList.unitList-collapsed {\r\n  display: none;\r\n}\r\n\r\n.unitList-group {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-groupName {\r\n  padding-left: 0.5em;\r\n}\r\n\r\n.unitList-unitList {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  padding-left: 1em;\r\n}\r\n\r\n.unitList-unitList.unitList-collapsed {\r\n  display: none;\r\n}\r\n\r\n.unitList-unit {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-unit.unitList-dead {\r\n  color: #aaaaaa;\r\n}\r\n\r\n.unitList-unit:hover {\r\n  background-color: rgba(205, 134, 20, .9);\r\n}\r\n\r\n.unitList-unitSymbol {\r\n  padding-left: 0.25em;\r\n}\r\n\r\n\r\n.unitList-sideName {\r\n  padding-left: 0.5em;\r\n  text-transform: uppercase;\r\n  font-size: larger;\r\n  font-weight: bold;\r\n}\r\n\r\n.unitList-east {\r\n  font-weight: 500;\r\n  color: rgb(255, 0, 0);\r\n}\r\n\r\n.unitList-west {\r\n  font-weight: 500;\r\n  color: rgb(0, 150, 255);\r\n}\r\n\r\n.unitList-ind {\r\n  font-weight: 500;\r\n  color: rgb(0, 255, 0);\r\n}\r\n\r\n.unitList-civ {\r\n  font-weight: 500;\r\n  color: rgb(214, 0, 255);\r\n}\r\n", { "container": "unitList-container", "header": "unitList-header", "listContainer": "unitList-listContainer", "list": "unitList-list", "settings": "unitList-settings", "collapseButton": "unitList-collapseButton", "side": "unitList-side", "groupList": "unitList-groupList", "collapsed": "unitList-collapsed", "group": "unitList-group", "groupName": "unitList-groupName", "unitList": "unitList-unitList", "unit": "unitList-unit", "dead": "unitList-dead", "unitSymbol": "unitList-unitSymbol", "sideName": "unitList-sideName", "east": "unitList-east", "west": "unitList-west", "ind": "unitList-ind", "civ": "unitList-civ" });
 
 class UnitList extends react.Component {
   constructor() {
@@ -27409,38 +27410,74 @@ class UnitList extends react.Component {
   }
 }
 
-function Side({ name, groups, onClick }) {
-  return react.createElement(
-    'li',
-    { className: index$3(styles$2.side) },
-    react.createElement(
-      'span',
-      { className: index$3(styles$2.sideName, styles$2[name]) },
-      name
-    ),
-    react.createElement(
-      'ul',
-      { className: styles$2.groupList },
-      Object.values(groups).map(({ name, units }) => react.createElement(Group, { key: name, name: name, units: units, onClick: onClick }))
-    )
-  );
+class Side extends react.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      collapsed: true
+    };
+  }
+
+  render() {
+    const { name, groups, onClick } = this.props;
+    const { collapsed } = this.state;
+
+    return react.createElement(
+      'li',
+      { className: index$3(styles$2.side) },
+      react.createElement(
+        'span',
+        { className: index$3(styles$2.collapseButton), onClick: () => this.setState({ collapsed: !collapsed }) },
+        collapsed ? '▸' : '▾'
+      ),
+      react.createElement(
+        'span',
+        { className: index$3(styles$2.sideName, styles$2[name]) },
+        name
+      ),
+      react.createElement(
+        'ul',
+        { className: index$3(styles$2.groupList, collapsed && styles$2.collapsed) },
+        Object.values(groups).map(({ name, units }) => react.createElement(Group, { key: name, name: name, units: units, onClick: onClick }))
+      )
+    );
+  }
 }
 
-function Group({ name, units, onClick }) {
-  return react.createElement(
-    'li',
-    { className: index$3(styles$2.group) },
-    react.createElement(
-      'span',
-      null,
-      name
-    ),
-    react.createElement(
-      'ul',
-      { className: styles$2.unitList },
-      Object.values(units).map(unit => react.createElement(Unit, { key: unit.name, unit: unit, onClick: onClick }))
-    )
-  );
+class Group extends react.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      collapsed: true
+    };
+  }
+
+  render() {
+    const { name, units, onClick } = this.props;
+    const { collapsed } = this.state;
+
+    return react.createElement(
+      'li',
+      { className: index$3(styles$2.group) },
+      react.createElement(
+        'span',
+        { className: index$3(styles$2.collapseButton), onClick: () => this.setState({ collapsed: !collapsed }) },
+        collapsed ? '▸' : '▾'
+      ),
+      react.createElement(
+        'span',
+        { className: index$3(styles$2.groupName) },
+        name
+      ),
+      react.createElement(
+        'ul',
+        { className: index$3(styles$2.unitList, collapsed && styles$2.collapsed) },
+        Object.values(units).map(unit => react.createElement(Unit, { key: unit.name, unit: unit, onClick: onClick }))
+      )
+    );
+  }
 }
 
 function Unit({ unit, onClick }) {
