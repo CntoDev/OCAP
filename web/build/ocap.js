@@ -20310,6 +20310,7 @@ const DEFAULT_PLAYBACK_SPEED = 10;
 
 const DEFAULT_SETTINGS = {
   labels: {
+    mouseOver: true,
     ai: false,
     players: true,
     vehicles: true
@@ -23380,8 +23381,6 @@ function createMapController(mapElement, state, settings) {
   }
 
   function renderPopup(marker, entity) {
-    marker.closePopup();
-
     if (entity.isPlayer && !entity.vehicle && settings.labels.players) {
       marker.openPopup();
     } else if (entity.type === 'Man' && settings.labels.ai) {
@@ -23392,6 +23391,8 @@ function createMapController(mapElement, state, settings) {
       marker.getPopup().setContent(`${entity.description} (${entity.crew.length})<br>` + entity.crew.map(unit => unit.name).join('<br>'));
     } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
       marker.openPopup();
+    } else {
+      marker.closePopup();
     }
   }
 
@@ -23408,6 +23409,8 @@ function createMapController(mapElement, state, settings) {
     marker.on('click', () => {
       state.follow(entity);
     });
+    marker.on('mouseover', () => settings.labels.mouseOver && marker.openPopup());
+    marker.on('mouseout', () => settings.labels.mouseOver && marker.closePopup());
 
     markers[entity.id] = marker;
 
