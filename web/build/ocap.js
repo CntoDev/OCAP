@@ -27411,7 +27411,7 @@ class UnitList extends react.Component {
 }
 
 class Side extends react.Component {
-  constructor() {
+  constructor({}) {
     super();
 
     this.state = {
@@ -27428,13 +27428,17 @@ class Side extends react.Component {
       { className: index$3(styles$2.side) },
       react.createElement(
         'span',
-        { className: index$3(styles$2.collapseButton), onClick: () => this.setState({ collapsed: !collapsed }) },
-        collapsed ? '▸' : '▾'
-      ),
-      react.createElement(
-        'span',
-        { className: index$3(styles$2.sideName, styles$2[name]) },
-        name
+        { onClick: () => this.setState({ collapsed: !collapsed }) },
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.collapseButton) },
+          collapsed ? '▸' : '▾'
+        ),
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.sideName, styles$2[name]) },
+          name
+        )
       ),
       react.createElement(
         'ul',
@@ -27463,13 +27467,17 @@ class Group extends react.Component {
       { className: index$3(styles$2.group) },
       react.createElement(
         'span',
-        { className: index$3(styles$2.collapseButton), onClick: () => this.setState({ collapsed: !collapsed }) },
-        collapsed ? '▸' : '▾'
-      ),
-      react.createElement(
-        'span',
-        { className: index$3(styles$2.groupName) },
-        name
+        { onClick: () => this.setState({ collapsed: !collapsed }) },
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.collapseButton) },
+          collapsed ? '▸' : '▾'
+        ),
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.groupName) },
+          name
+        )
       ),
       react.createElement(
         'ul',
