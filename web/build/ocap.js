@@ -20310,6 +20310,7 @@ const DEFAULT_PLAYBACK_SPEED = 10;
 
 const DEFAULT_SETTINGS = {
   labels: {
+    mouseOver: true,
     ai: false,
     players: true,
     vehicles: true
@@ -20599,7 +20600,7 @@ function DisconnectedLog({ player, frameIndex }) {
 function createPlayer(state, settings) {
   let frames = null;
   let intervalHandle = null;
-  let currentFrameIndex = -1;
+  let currentFrameIndex = 0;
 
   const player = createEmitter({
     load,
@@ -20655,7 +20656,7 @@ function createPlayer(state, settings) {
   }
 
   function goTo(frameIndex) {
-    currentFrameIndex = -1;
+    currentFrameIndex = 0;
     state.eventLog = [];
     while (currentFrameIndex < frameIndex) applyNextFrame(true);
     applyNextFrame();
@@ -23380,8 +23381,6 @@ function createMapController(mapElement, state, settings) {
   }
 
   function renderPopup(marker, entity) {
-    marker.closePopup();
-
     if (entity.isPlayer && !entity.vehicle && settings.labels.players) {
       marker.openPopup();
     } else if (entity.type === 'Man' && settings.labels.ai) {
@@ -23392,6 +23391,8 @@ function createMapController(mapElement, state, settings) {
       marker.getPopup().setContent(`${entity.description} (${entity.crew.length})<br>` + entity.crew.map(unit => unit.name).join('<br>'));
     } else if (entity.crew && entity.crew.some(unit => !unit.isPlayer) && settings.labels.vehicles && settings.labels.ai) {
       marker.openPopup();
+    } else {
+      marker.closePopup();
     }
   }
 
@@ -23407,7 +23408,10 @@ function createMapController(mapElement, state, settings) {
     marker.bindPopup(createPopup(entity));
     marker.on('click', () => {
       state.follow(entity);
+      marker.openPopup();
     });
+    marker.on('mouseover', () => (entity.followed || settings.labels.mouseOver) && marker.openPopup());
+    marker.on('mouseout', () => settings.labels.mouseOver && marker.closePopup());
 
     markers[entity.id] = marker;
 
@@ -27349,7 +27353,7 @@ function isEqual(value, other) {
 
 var isEqual_1 = isEqual;
 
-var styles$2 = __$styleInject(".unitList-container {\r\n  position: relative;\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n}\r\n\r\n.unitList-header {\r\n  background-color: rgba(0, 0, 0, .3);\r\n  text-align: center;\r\n  padding: 0.5em;\r\n}\r\n\r\n.unitList-listContainer {\r\n  -webkit-box-flex: 1;\r\n      -ms-flex-positive: 1;\r\n          flex-grow: 1;\r\n  overflow: scroll;\r\n}\r\n\r\n.unitList-list {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  font-size: smaller;\r\n}\r\n\r\n.unitList-settings {\r\n\r\n}\r\n\r\n.unitList-side {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-groupList {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n}\r\n\r\n.unitList-group {\r\n  padding-left: 0.5em;\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-unitList {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n}\r\n\r\n.unitList-unit {\r\n  padding-left: 1em;\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-unit.unitList-dead {\r\n  color: #aaaaaa;\r\n}\r\n\r\n.unitList-unit:hover {\r\n  background-color: rgba(205, 134, 20, .9);\r\n}\r\n\r\n.unitList-unitSymbol {\r\n  padding-left: 0.25em;\r\n}\r\n\r\n.unitList-sideName {\r\n  padding-left: 0.5em;\r\n  text-transform: uppercase;\r\n  font-size: larger;\r\n  font-weight: bold;\r\n}\r\n\r\n.unitList-east {\r\n  font-weight: 500;\r\n  color: rgb(255, 0, 0);\r\n}\r\n\r\n.unitList-west {\r\n  font-weight: 500;\r\n  color: rgb(0, 150, 255);\r\n}\r\n\r\n.unitList-ind {\r\n  font-weight: 500;\r\n  color: rgb(0, 255, 0);\r\n}\r\n\r\n.unitList-civ {\r\n  font-weight: 500;\r\n  color: rgb(214, 0, 255);\r\n}\r\n", { "container": "unitList-container", "header": "unitList-header", "listContainer": "unitList-listContainer", "list": "unitList-list", "settings": "unitList-settings", "side": "unitList-side", "groupList": "unitList-groupList", "group": "unitList-group", "unitList": "unitList-unitList", "unit": "unitList-unit", "dead": "unitList-dead", "unitSymbol": "unitList-unitSymbol", "sideName": "unitList-sideName", "east": "unitList-east", "west": "unitList-west", "ind": "unitList-ind", "civ": "unitList-civ" });
+var styles$2 = __$styleInject(".unitList-container {\r\n  position: relative;\r\n  height: 100%;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n}\r\n\r\n.unitList-header {\r\n  background-color: rgba(0, 0, 0, .3);\r\n  text-align: center;\r\n  padding: 0.5em;\r\n}\r\n\r\n.unitList-listContainer {\r\n  -webkit-box-flex: 1;\r\n      -ms-flex-positive: 1;\r\n          flex-grow: 1;\r\n  overflow: scroll;\r\n}\r\n\r\n.unitList-list {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  font-size: smaller;\r\n  padding-left: 0.5em;\r\n}\r\n\r\n.unitList-settings {\r\n\r\n}\r\n\r\n.unitList-collapseButton {\r\n}\r\n\r\n.unitList-side {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-groupList {\r\n  display: none;\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  padding-left: 0.75em;\r\n}\r\n\r\n.unitList-groupList.unitList-open {\r\n  display: block;\r\n}\r\n\r\n.unitList-group {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-groupName {\r\n  padding-left: 0.5em;\r\n}\r\n\r\n.unitList-unitList {\r\n  display: none;\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n  padding-left: 1em;\r\n}\r\n\r\n.unitList-unitList.unitList-open {\r\n  display: block;\r\n}\r\n\r\n.unitList-unit {\r\n  line-height: 2em;\r\n}\r\n\r\n.unitList-unit.unitList-dead {\r\n  color: #aaaaaa;\r\n}\r\n\r\n.unitList-unit:hover {\r\n  background-color: rgba(205, 134, 20, .9);\r\n}\r\n\r\n.unitList-unitSymbol {\r\n  padding-left: 0.25em;\r\n}\r\n\r\n\r\n.unitList-sideName {\r\n  padding-left: 0.5em;\r\n  text-transform: uppercase;\r\n  font-size: larger;\r\n  font-weight: bold;\r\n}\r\n\r\n.unitList-east {\r\n  font-weight: 500;\r\n  color: rgb(255, 0, 0);\r\n}\r\n\r\n.unitList-west {\r\n  font-weight: 500;\r\n  color: rgb(0, 150, 255);\r\n}\r\n\r\n.unitList-ind {\r\n  font-weight: 500;\r\n  color: rgb(0, 255, 0);\r\n}\r\n\r\n.unitList-civ {\r\n  font-weight: 500;\r\n  color: rgb(214, 0, 255);\r\n}\r\n", { "container": "unitList-container", "header": "unitList-header", "listContainer": "unitList-listContainer", "list": "unitList-list", "settings": "unitList-settings", "collapseButton": "unitList-collapseButton", "side": "unitList-side", "groupList": "unitList-groupList", "open": "unitList-open", "group": "unitList-group", "groupName": "unitList-groupName", "unitList": "unitList-unitList", "unit": "unitList-unit", "dead": "unitList-dead", "unitSymbol": "unitList-unitSymbol", "sideName": "unitList-sideName", "east": "unitList-east", "west": "unitList-west", "ind": "unitList-ind", "civ": "unitList-civ" });
 
 class UnitList extends react.Component {
   constructor() {
@@ -27376,8 +27380,21 @@ class UnitList extends react.Component {
     const list = {};
     this.props.state.entities.forEach(entity => {
       if (entity.type === 'Man') {
-        const side = list[entity.side] || (list[entity.side] = { name: entity.side, groups: {} });
-        const group = side.groups[entity.group] || (side.groups[entity.group] = { name: entity.group, units: {} });
+        const side = list[entity.side] || (list[entity.side] = {
+          name: entity.side,
+          groups: {}
+        });
+
+        side.open = side.open || entity.followed;
+
+        const group = side.groups[entity.group] || (side.groups[entity.group] = {
+          name: entity.group,
+          units: {},
+          open: entity.followed
+        });
+
+        group.open = group.open || entity.followed;
+
         const unit = group.units[entity.id] || (group.units[entity.id] = entity);
       }
     });
@@ -27399,45 +27416,105 @@ class UnitList extends react.Component {
           'ul',
           { className: styles$2.list },
           ' ',
-          Object.values(list).map(({ name, groups }) => react.createElement(Side, { key: name, name: name, groups: groups, onClick: onClick }))
+          Object.values(list).map(({ name, groups, open }) => react.createElement(Side, { key: name, name: name, groups: groups, open: open, onClick: onClick }))
         )
       )
     );
   }
 }
 
-function Side({ name, groups, onClick }) {
-  return react.createElement(
-    'li',
-    { className: index$3(styles$2.side) },
-    react.createElement(
-      'span',
-      { className: index$3(styles$2.sideName, styles$2[name]) },
-      name
-    ),
-    react.createElement(
-      'ul',
-      { className: styles$2.groupList },
-      Object.values(groups).map(({ name, units }) => react.createElement(Group, { key: name, name: name, units: units, onClick: onClick }))
-    )
-  );
+class Side extends react.Component {
+  constructor({ open = false }) {
+    super();
+
+    this.state = {
+      open
+    };
+  }
+
+  componentWillReceiveProps({ open }) {
+    if (open !== this.state.open) {
+      this.setState({
+        open
+      });
+    }
+  }
+
+  render() {
+    const { name, groups, onClick } = this.props;
+    const { open } = this.state;
+
+    return react.createElement(
+      'li',
+      { className: index$3(styles$2.side) },
+      react.createElement(
+        'span',
+        { onClick: () => this.setState({ open: !open }) },
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.collapseButton) },
+          open ? '▸' : '▾'
+        ),
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.sideName, styles$2[name]) },
+          name
+        )
+      ),
+      react.createElement(
+        'ul',
+        { className: index$3(styles$2.groupList, open && styles$2.open) },
+        Object.values(groups).map(({ name, units, open }) => react.createElement(Group, { key: name, name: name, units: units, open: open, onClick: onClick }))
+      )
+    );
+  }
 }
 
-function Group({ name, units, onClick }) {
-  return react.createElement(
-    'li',
-    { className: index$3(styles$2.group) },
-    react.createElement(
-      'span',
-      null,
-      name
-    ),
-    react.createElement(
-      'ul',
-      { className: styles$2.unitList },
-      Object.values(units).map(unit => react.createElement(Unit, { key: unit.name, unit: unit, onClick: onClick }))
-    )
-  );
+class Group extends react.Component {
+  constructor({ open = false }) {
+    super();
+
+    this.state = {
+      open
+    };
+  }
+
+  componentWillReceiveProps({ open }) {
+    if (open !== this.state.open) {
+      this.setState({
+        open
+      });
+    }
+  }
+
+  render() {
+    const { name, units, onClick } = this.props;
+    const { open } = this.state;
+
+    return react.createElement(
+      'li',
+      { className: index$3(styles$2.group) },
+      react.createElement(
+        'span',
+        { onClick: () => this.setState({ open: !open }) },
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.collapseButton) },
+          open ? '▸' : '▾'
+        ),
+        react.createElement(
+          'span',
+          { className: index$3(styles$2.groupName) },
+          name
+        )
+      ),
+      react.createElement(
+        'ul',
+        { className: index$3(styles$2.unitList, open && styles$2.open) },
+        Object.values(units).map(unit => react.createElement(Unit, { key: unit.name, unit: unit, onClick: onClick }))
+      )
+    );
+  }
 }
 
 function Unit({ unit, onClick }) {
@@ -27527,7 +27604,7 @@ class PlaybackWidget extends react.Component {
 
   skipToFrame(event) {
     const value = Number.parseInt(event.target.value);
-    this.props.player.goTo(value);
+    this.props.player.goTo(value - 1);
   }
 
   togglePlayback() {
@@ -27581,7 +27658,7 @@ class PlaybackSpeedWidget extends react.Component {
         '\xD7'
       ),
       react.createElement('input', { className: index$3(styles$3.playbackSpeedSlider, sliderVisible && styles$3.visible),
-        type: 'range', min: '1', value: playbackSpeed, max: '60', step: '1',
+        type: 'range', min: '1', value: playbackSpeed, max: '20', step: '1',
         onChange: event => this.updatePlaybackSpeed(Number.parseFloat(event.target.value)) })
     );
   }
